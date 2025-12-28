@@ -22,7 +22,9 @@ const HomeProductCard = ({ product }: { product: Product }) => {
       <Link
         className="absolute z-10 inset-0"
         href={`/product/${product._id}/${product.slug}`}
-      />
+      >
+        <span className="sr-only">See {product.title}</span>
+      </Link>
       <div className="relative  overflow-hidden">
         <Image
           width={255}
@@ -57,7 +59,10 @@ const HomeProductCard = ({ product }: { product: Product }) => {
         {/* Quick Add Button */}
         {product.TotalStock ||
           (true && (
-            <Button className="absolute bottom-3 right-3p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300  hover:scale-110">
+            <Button
+              aria-label={`available in Stock`}
+              className="absolute bottom-3 right-3p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300  hover:scale-110"
+            >
               <ShoppingBag size={20} className="" />
             </Button>
           ))}

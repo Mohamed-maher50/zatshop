@@ -186,7 +186,7 @@ const products = [
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-linear-to-br p-8">
+    <main className="min-h-screen bg-linear-to-br p-8">
       <div className="max-w-7xl mx-auto">
         <Container>
           <CategoriesGrid>
@@ -211,6 +211,6 @@ export default function Page() {
           </ProductsGrid>
         </Container>
       </div>
-    </div>
+    </main>
   );
 }
