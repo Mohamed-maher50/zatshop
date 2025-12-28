@@ -1,4 +1,7 @@
 import { Container } from "@/components/Container";
+import CategoriesGrid from "@/features/Categories/components/CategoriesGrid";
+import CategoryCard from "@/features/Categories/components/CategoryCard";
+import { mockCategories } from "@/features/Categories/mock";
 import HomeProductCard from "@/features/products/components/HomeProductCard";
 import ProductsGrid from "@/features/products/components/ProductsGrid";
 const products = [
@@ -186,6 +189,11 @@ export default function Page() {
     <div className="min-h-screen bg-linear-to-br p-8">
       <div className="max-w-7xl mx-auto">
         <Container>
+          <CategoriesGrid>
+            {mockCategories.slice(0, 4).map((c) => {
+              return <CategoryCard category={c} key={c._id} />;
+            })}
+          </CategoriesGrid>
           <div className="mb-8">
             <h1 className="text-3xl  text-center font-garamond font-bold uppercase  text-[#3A3845] mb-2">
               Best Sellers

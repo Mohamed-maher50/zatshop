@@ -20,7 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${fontSans.variable} ${fontGaramond.variable}`}>
+    <html
+      lang="en"
+      className={`${fontSans.variable} font-sans ${fontGaramond.variable}`}
+    >
       <body className="antialiased">{children}</body>
     </html>
   );
