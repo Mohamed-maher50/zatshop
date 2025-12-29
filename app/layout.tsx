@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
+import AppNavbar from "@/components/Navbar";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const fontGaramond = Cormorant_Garamond({
@@ -24,7 +25,11 @@ export default function RootLayout({
       lang="en"
       className={`${fontSans.variable} font-sans ${fontGaramond.variable}`}
     >
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <AppNavbar />
+
+        {children}
+      </body>
     </html>
   );
 }

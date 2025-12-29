@@ -186,9 +186,9 @@ const products = [
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-linear-to-br p-8">
-      <div className="max-w-7xl mx-auto">
-        <Container>
+    <main className="min-h-screen flex flex-col gap-20 bg-linear-to-br ">
+      <Container>
+        <div className="flex flex-col gap-20">
           <CategoriesGrid>
             {mockCategories.slice(0, 4).map((c) => {
               return <CategoryCard category={c} key={c._id} />;
@@ -209,8 +209,8 @@ export default function Page() {
               <HomeProductCard key={product.title} product={product} />
             ))}
           </ProductsGrid>
-        </Container>
-      </div>
+        </div>
+      </Container>
     </main>
   );
 }
