@@ -11,6 +11,8 @@ import {
 import { Button } from "./ui/button";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "./ui/drawer";
 import Image from "next/image";
+import { ImgHTMLAttributes } from "react";
+import { cn } from "@/lib/utils";
 const NAV_LINKS = [
   {
     id: 1,
@@ -33,14 +35,18 @@ const NAV_LINKS = [
     href: "",
   },
 ];
-const Logo = () => {
+export const Logo = ({
+  className,
+  ...props
+}: Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "width" | "height">) => {
   return (
     <Image
       alt="zat logo"
-      className="object-cover"
-      src={"/Gemini_Generated_Image_2i3do2i3do2i3do2.png"}
+      className={cn("object-cover ", className)}
+      src={"/Gemini_Generated_Image_2i3do2i3do2i3do2-removebg-preview.png"}
       width={145}
       height={38}
+      {...props}
     />
   );
 };

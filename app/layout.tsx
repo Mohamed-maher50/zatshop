@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import AppNavbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const fontGaramond = Cormorant_Garamond({
@@ -29,6 +30,7 @@ export default function RootLayout({
         <AppNavbar />
 
         {children}
+        <Footer />
       </body>
     </html>
   );
