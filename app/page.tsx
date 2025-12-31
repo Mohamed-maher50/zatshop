@@ -4,7 +4,7 @@ import CategoryCard from "@/features/Categories/components/CategoryCard";
 import { mockCategories } from "@/features/Categories/mock";
 import HomeProductCard from "@/features/products/components/HomeProductCard";
 import ProductsGrid from "@/features/products/components/ProductsGrid";
-const products = [
+export const products = [
   {
     title: "Modern Ceramic Vase with Minimalist Design",
     slug: "ceramic-vase",

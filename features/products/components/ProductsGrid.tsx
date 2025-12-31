@@ -1,8 +1,21 @@
-import React, { ReactNode } from "react";
+import { cn } from "@/lib/utils";
+import React, { HtmlHTMLAttributes, ReactNode } from "react";
 
-const ProductsGrid = ({ children }: { children: ReactNode }) => {
+const ProductsGrid = ({
+  children,
+  className,
+  style,
+  ...props
+}: HtmlHTMLAttributes<HTMLDivElement>) => {
   return (
-    <div className="grid gap-2.5 gap-y-12 md:gap-y-10  grid-rows-[auto_1fr_auto_1fr] md:grid-cols-4  md:gap-7.5  ">
+    <div
+      className={cn(
+        "grid gap-2.5 gap-y-12 md:gap-y-10   md:grid-cols-4  md:gap-7.5  ",
+        className
+      )}
+      style={{ ...style }}
+      {...props}
+    >
       {children}
     </div>
   );

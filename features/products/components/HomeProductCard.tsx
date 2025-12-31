@@ -21,7 +21,7 @@ const HomeProductCard = ({ product }: { product: Product }) => {
 
       <Link
         className="absolute z-10 inset-0"
-        href={`/product/${product._id}/${product.slug}`}
+        href={`/products/${product._id}/${product.slug}`}
       >
         <span className="sr-only">See {product.title}</span>
       </Link>
