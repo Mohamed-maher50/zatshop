@@ -1,7 +1,7 @@
 import { Container } from "@/components/Container";
+import { Categories, Products } from "@/features/api";
 import CategoriesGrid from "@/features/Categories/components/CategoriesGrid";
 import CategoryCard from "@/features/Categories/components/CategoryCard";
-import { mockCategories } from "@/features/Categories/mock";
 import HomeProductCard from "@/features/products/components/HomeProductCard";
 import ProductsGrid from "@/features/products/components/ProductsGrid";
 export const products = [
@@ -184,13 +184,20 @@ export const products = [
   },
 ];
 
-export default function Page() {
+export default async function Page() {
+  const categoriesResponse = await Categories.findMany("?limit=4");
+  const categories = categoriesResponse.data;
+  const productsResponse = await Products.findMany(
+    "?limit=4&fields=variants,title,imageCover,ratingsQuantity,isFreeShipping,TotalStock,TotalSold,_id"
+  );
+  const products = productsResponse.data;
+
   return (
     <main className="min-h-screen flex flex-col gap-20 bg-linear-to-br ">
       <Container>
         <div className="flex flex-col gap-20">
           <CategoriesGrid>
-            {mockCategories.slice(0, 4).map((c) => {
+            {categories.map((c) => {
               return <CategoryCard category={c} key={c._id} />;
             })}
           </CategoriesGrid>

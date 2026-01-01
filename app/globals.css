@@ -11,9 +11,8 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
-  --font-garamond: var(--font-garamond);
+
+  --font-tajawal: var(--font-tajawal);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

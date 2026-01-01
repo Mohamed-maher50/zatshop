@@ -52,7 +52,7 @@ export const Logo = ({
 };
 const AppNavbar = () => {
   return (
-    <div className="border-b border-b-[#CAC9CF]">
+    <div className="border-b border-b-[#CAC9CF]" dir="ltr">
       <Drawer disablePreventScroll={false} modal direction="left">
         <Container>
           <nav className="flex  py-2.5 items-center justify-between">

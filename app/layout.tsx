@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Cormorant_Garamond } from "next/font/google";
+import { Tajawal } from "next/font/google";
 import "./globals.css";
 import AppNavbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const fontGaramond = Cormorant_Garamond({
-  subsets: ["latin"],
-  variable: "--font-garamond",
+const tajawal = Tajawal({
+  subsets: ["arabic"],
+  weight: ["400", "500", "700"],
+  variable: "--font-tajawal",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -22,11 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${fontSans.variable} font-sans ${fontGaramond.variable}`}
-    >
-      <body className="antialiased">
+    <html lang="en" dir="rtl" className={`${tajawal.variable}`}>
+      <body className="antialiased font-tajawal ">
         <AppNavbar />
 
         {children}
