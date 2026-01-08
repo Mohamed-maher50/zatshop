@@ -1,3 +1,3 @@
-import { SignupForm } from "@/components/SignupForm";
+import { SignupForm } from "@/components/auth/SignupForm";
 
 export default () => <SignupForm />;
