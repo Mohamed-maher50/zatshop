@@ -71,7 +71,9 @@ const AppNavbar = () => {
           <nav className="flex  py-2.5 items-center justify-between">
             <DrawerContent className="px-10 flex-col flex gap-5">
               <DrawerTitle className="py-4 text-xl font-garamond font-extrabold">
-                <Logo />
+                <Link href={"/"}>
+                  <Logo />
+                </Link>
               </DrawerTitle>
               <div className="flex flex-col flex-1  gap-6 mt-8">
                 {NAV_LINKS.map((navLink) => {
@@ -97,7 +99,9 @@ const AppNavbar = () => {
               </Button>
             </DrawerTrigger>
             <div className="h-9.5 grid place-items-center">
-              <Logo />
+              <Link href={"/"}>
+                <Logo />
+              </Link>
             </div>
             <div className="justify-between hidden sm:flex   gap-x-14.5">
               {NAV_LINKS.map((navLink) => {
