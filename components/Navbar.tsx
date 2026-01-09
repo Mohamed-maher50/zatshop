@@ -1,9 +1,9 @@
+"use client";
 import Link from "next/link";
 import { Container } from "./Container";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   UserCircleIcon,
-  FavouriteIcon,
   Search01Icon,
   ShoppingCart02Icon,
   Menu03Icon,
@@ -11,28 +11,39 @@ import {
 import { Button } from "./ui/button";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "./ui/drawer";
 import Image from "next/image";
-import { ImgHTMLAttributes } from "react";
+import { ImgHTMLAttributes, useState } from "react";
 import { cn } from "@/lib/utils";
+import AuthOnly from "./auth/OnlyAuth";
+import OnlyLogout from "./auth/OnlyLogout";
+import { AUTH_LINKS_ENUM } from "@/constants/Links";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { signOut } from "next-auth/react";
+import { SearchDialog } from "./SearchDialog";
 const NAV_LINKS = [
   {
-    id: 1,
-    label: "home",
-    href: "/",
-  },
-  {
-    id: 2,
-    label: "shop",
-    href: "",
-  },
-  {
     id: 3,
-    label: "about",
-    href: "",
+    label: "عنا",
+    href: "/about",
   },
   {
     id: 4,
-    label: "contact",
-    href: "",
+    label: "التواصل معنا",
+    href: "/contact",
+  },
+  {
+    id: 2,
+    label: "المنتجات",
+    href: "/products",
+  },
+  {
+    id: 1,
+    label: "الرئسية",
+    href: "/",
   },
 ];
 export const Logo = ({
@@ -51,6 +62,7 @@ export const Logo = ({
   );
 };
 const AppNavbar = () => {
+  const [isSearchDialogOpen, setSearchDialogOpen] = useState(false);
   return (
     <div className="border-b border-b-[#CAC9CF]" dir="ltr">
       <Drawer disablePreventScroll={false} modal direction="left">
@@ -86,7 +98,7 @@ const AppNavbar = () => {
             <div className="h-9.5 grid place-items-center">
               <Logo />
             </div>
-            <div className=" justify-between hidden sm:flex   gap-x-14.5">
+            <div className="justify-between hidden sm:flex   gap-x-14.5">
               {NAV_LINKS.map((navLink) => {
                 return (
                   <Link
@@ -99,27 +111,63 @@ const AppNavbar = () => {
                 );
               })}
             </div>
-            <div className="flex gap-6">
+            <div className="flex items-center gap-6">
+              <SearchDialog
+                isOpen={isSearchDialogOpen}
+                onClose={() => setSearchDialogOpen((prev) => !prev)}
+              />
               <HugeiconsIcon
+                onClick={() => setSearchDialogOpen((prev) => !prev)}
                 icon={Search01Icon}
                 className="text-natural-700 max-sm:hidden"
                 size={20}
               />
-              <HugeiconsIcon
-                icon={UserCircleIcon}
-                size={20}
-                className="text-natural-700 max-sm:hidden"
-              />
-              <HugeiconsIcon
-                icon={FavouriteIcon}
-                size={20}
-                className="text-natural-700 max-sm:hidden"
-              />
-              <HugeiconsIcon
-                icon={ShoppingCart02Icon}
-                size={20}
-                className="text-natural-700 "
-              />
+              <AuthOnly>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className={"cursor-pointer"}>
+                    <HugeiconsIcon
+                      icon={UserCircleIcon}
+                      size={20}
+                      className="text-natural-700  max-sm:hidden"
+                    />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className={"py-1"}>
+                    <DropdownMenuItem className={"py-0.5"}>
+                      <AuthOnly>
+                        <Link href={"/settings"} className="w-full">
+                          <Button className={"w-full"} variant={"outline"}>
+                            حسابي
+                          </Button>
+                        </Link>
+                      </AuthOnly>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className={"py-0.5"}>
+                      <AuthOnly>
+                        <Button
+                          onClick={() => signOut()}
+                          className={"w-full"}
+                          variant={"outline"}
+                        >
+                          تسجيل الخروج
+                        </Button>
+                      </AuthOnly>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                <Link href={`/cart`}>
+                  <HugeiconsIcon
+                    icon={ShoppingCart02Icon}
+                    size={20}
+                    className="text-natural-700 "
+                  />
+                </Link>
+              </AuthOnly>
+              <OnlyLogout>
+                <Button variant={"outline"}>
+                  <Link href={AUTH_LINKS_ENUM.SIGNIN_PAGE}>تسجيل الدخول</Link>
+                </Button>
+              </OnlyLogout>
             </div>
           </nav>
         </Container>
