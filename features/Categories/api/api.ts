@@ -6,11 +6,11 @@ import { AxiosRequestConfig, AxiosResponse } from "axios";
 export const Categories = {
   findMany: async <T>(
     query: string,
-    options?: AxiosRequestConfig<T> | undefined
+    options: AxiosRequestConfig<T> | undefined
   ) => {
     const res = await api.get<
       null,
-      AxiosResponse<apiPaginatedResponse<Category[]>>
+      AxiosResponse<apiPaginatedResponse<Category>>
     >(`${baseUrl}/categories${query}`, options);
     return res;
   },
