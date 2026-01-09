@@ -3,10 +3,10 @@ import { passwordConfirmValidation, passwordValidation } from "./sharedFields";
 
 export const resetPasswordSchema = z
   .object({
-    password: passwordValidation,
+    newPassword: passwordValidation,
     passwordConfirm: passwordConfirmValidation,
   })
-  .refine((data) => data.password === data.passwordConfirm, {
+  .refine((data) => data.newPassword === data.passwordConfirm, {
     message: "Password confirmation does not match",
     path: ["passwordConfirm"],
   });
