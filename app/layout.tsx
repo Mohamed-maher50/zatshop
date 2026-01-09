@@ -3,9 +3,19 @@ import { Tajawal } from "next/font/google";
 import "./globals.css";
 import AppNavbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import AuthSessionProvider from "@/providers/AuthSessionProvider";
+import { Toaster } from "sonner";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  AlertDiamondIcon,
+  AlertSquareIcon,
+  Loading03Icon,
+  Tick02Icon,
+} from "@hugeicons/core-free-icons";
 
 const tajawal = Tajawal({
-  subsets: ["arabic"],
+  subsets: ["arabic", "latin"],
   weight: ["400", "500", "700"],
   variable: "--font-tajawal",
   display: "swap",
@@ -25,10 +35,34 @@ export default function RootLayout({
   return (
     <html lang="en" dir="rtl" className={`${tajawal.variable}`}>
       <body className="antialiased font-tajawal ">
-        <AppNavbar />
+        <AuthSessionProvider>
+          <AppNavbar />
 
-        {children}
-        <Footer />
+          <NuqsAdapter>{children}</NuqsAdapter>
+          <Footer />
+          <Toaster
+            position="top-center"
+            richColors
+            toastOptions={{
+              style: {
+                borderRadius: 0,
+              },
+            }}
+            icons={{
+              success: <HugeiconsIcon icon={Tick02Icon} size={16} />,
+              info: <HugeiconsIcon icon={AlertSquareIcon} size={16} />,
+              warning: <HugeiconsIcon icon={AlertSquareIcon} size={16} />,
+              error: <HugeiconsIcon icon={AlertDiamondIcon} size={16} />,
+              loading: (
+                <HugeiconsIcon
+                  icon={Loading03Icon}
+                  className="animate-spin"
+                  size={16}
+                />
+              ),
+            }}
+          />
+        </AuthSessionProvider>
       </body>
     </html>
   );
