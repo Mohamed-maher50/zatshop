@@ -7,6 +7,7 @@ import {
   Search01Icon,
   ShoppingCart02Icon,
   Menu03Icon,
+  Menu01Icon,
 } from "@hugeicons/core-free-icons";
 import { Button, buttonVariants } from "./ui/button";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "./ui/drawer";
@@ -89,7 +90,7 @@ const AppNavbar = () => {
             <DrawerTrigger asChild>
               <Button variant={"ghost"} className={"hidden max-sm:block"}>
                 <HugeiconsIcon
-                  icon={Menu03Icon}
+                  icon={Menu01Icon}
                   size={20}
                   className="text-natural-700  "
                 />
