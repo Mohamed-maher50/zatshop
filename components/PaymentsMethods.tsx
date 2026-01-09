@@ -34,13 +34,13 @@ export const PaymentMethodCard = ({
     <Label
       htmlFor={id}
       className={cn(
-        "relative flex cursor-pointer items-center gap-4 rounded-xl border-2 bg-card p-4 transition-all hover:border-primary/50",
+        "relative flex cursor-pointer items-center gap-4  border-2 bg-card p-4 transition-all hover:border-primary/50",
         isSelected ? "border-primary ring-2 ring-primary/10" : "border-border"
       )}
     >
       <RadioGroupItem value={id} id={id} className="sr-only" />
 
-      <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-muted">
+      <div className="flex size-12 shrink-0 items-center justify-center bg-muted">
         {Icon && <Icon className="size-6 text-foreground" />}
       </div>
 

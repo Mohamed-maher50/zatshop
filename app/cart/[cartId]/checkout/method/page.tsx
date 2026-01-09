@@ -55,16 +55,14 @@ const ChooseMethodsPage = () => {
             <Spinner className="animate-spin" />
           </span>
         </Button>
-        <Link href={`/cart/${cartId}/checkout`} scroll={false}>
-          <Button
-            size="lg"
-            variant={"secondary"}
-            type="button"
-            onClick={onSubmit}
-          >
-            العوده لصفحة العنوان
-          </Button>
-        </Link>
+        <Button
+          onClick={() => router.back()}
+          size="lg"
+          variant={"secondary"}
+          type="button"
+        >
+          العوده لصفحة العنوان
+        </Button>
       </div>
     </div>
   );
