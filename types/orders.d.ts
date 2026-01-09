@@ -1,19 +1,29 @@
-import { Cart, CartItem } from "./carts";
-import { User } from "./Users";
+import { Cart, CartItem, CartResponseItem } from "./carts";
+import { Address, User } from "./Users";
+export type OrderUser = {
+  _id: string;
+  name: string;
+  email: string;
+};
+export type PaymentMethodType = "cash" | "card";
+export type Order = {
+  _id: string;
+  publicId: string;
+  subtotal: number;
+  user: OrderUser;
+  cartItems: CartResponseItem[];
 
-export interface Order {
-  _id: "694cf08bf89ca9d3049ee1a8";
-  user: Pick<User, "_id" | "name" | "email">;
-  cartItems: Array<CartItem>;
-  taxPrice: 0;
-  shippingPrice: 0;
-  totalOrderPrice: 100;
-  paymentMethodType: "cash" | "card";
-  isPaid: false;
-  paidAt?: string;
-  isDelivered: false;
-  deliveredAt?: string;
+  shippingAddress: Address;
+
+  paymentMethodType: PaymentMethodType;
+
+  shippingPrice: number;
+  taxPrice: number;
+  totalOrderPrice: number;
+
+  isPaid: boolean;
+  isDelivered: boolean;
+
   createdAt: string;
   updatedAt: string;
-  publicId: string;
-}
+};
