@@ -6,16 +6,16 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const Pagination = ({ totalPages = 10 }: { totalPages: number }) => {
-  const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     // Read page from URL on mount
-    const params = new URLSearchParams(window.location.search);
-    const page = parseInt(params.get("page") || "1");
+
+    const page = parseInt(searchParams.get("page") || "1");
     setCurrentPage(page);
-  }, []);
+  }, [searchParams.get("page")]);
 
   const updateURL = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
