@@ -197,22 +197,22 @@ export const products = [
   },
 ];
 
-const requests = [
-  Brands.findMany(HOME_BRANDS_QUERY, {
-    adapter: "fetch",
-    fetchOptions: { cache: "no-store" },
-  }),
-  Categories.findMany("?limit=50", {
-    adapter: "fetch",
-    fetchOptions: { cache: "no-store" },
-    // fetchOptions: { cache: "force-cache" },
-  }),
-
-  Products.findMany(HOME_MOST_SOLD_PRODUCT_QUERY),
-  Products.findMany(HOME_MOST_RATING_PRODUCT_QUERY),
-  Products.findMany(HOME_NEWEST_PRODUCT_QUERY),
-] as const;
 export default async function Page() {
+  const requests = [
+    Brands.findMany(HOME_BRANDS_QUERY, {
+      adapter: "fetch",
+      fetchOptions: { cache: "no-store" },
+    }),
+    Categories.findMany("?limit=50", {
+      adapter: "fetch",
+      fetchOptions: { cache: "no-store" },
+      // fetchOptions: { cache: "force-cache" },
+    }),
+
+    Products.findMany(HOME_MOST_SOLD_PRODUCT_QUERY),
+    Products.findMany(HOME_MOST_RATING_PRODUCT_QUERY),
+    Products.findMany(HOME_NEWEST_PRODUCT_QUERY),
+  ] as const;
   const [
     BrandResponse,
     categoriesResponse,
