@@ -29,6 +29,28 @@ export const NextAuthOptions: AuthOptions = {
   ],
   session: { strategy: "jwt" },
   callbacks: {
+    redirect: async ({ url, baseUrl }) => {
+      const isRelativeUrl = url.startsWith("/");
+      if (isRelativeUrl) {
+        return `${baseUrl}${url}`;
+      }
+
+      const isSameOriginUrl = new URL(url).origin === baseUrl;
+      const alreadyRedirected = url.includes("callbackUrl=");
+      if (isSameOriginUrl && alreadyRedirected) {
+        const originalCallbackUrl = decodeURIComponent(
+          url.split("callbackUrl=")[1]
+        );
+
+        return originalCallbackUrl;
+      }
+
+      if (isSameOriginUrl) {
+        return url;
+      }
+
+      return baseUrl;
+    },
     jwt({ token, user }) {
       if (user) {
         return {
@@ -51,6 +73,7 @@ export const NextAuthOptions: AuthOptions = {
   pages: {
     signIn: AUTH_LINKS_ENUM.SIGNIN_PAGE,
   },
+  debug: true,
 };
 const handler = NextAuth(NextAuthOptions);
 

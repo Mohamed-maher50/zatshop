@@ -22,6 +22,9 @@ import { Fragment } from "react/jsx-runtime";
 import Link from "next/link";
 import { CartResponse } from "@/types/carts";
 import EmptyCartMessage from "@/components/EmptyCartMessage";
+import { getServerSession } from "next-auth";
+import { NextAuthOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
 export interface CartItem {
   id: string;
@@ -32,6 +35,10 @@ export interface CartItem {
 }
 
 const CartPage = async () => {
+  const session = await getServerSession(NextAuthOptions);
+  if (!session) {
+    redirect(`/auth/signin?callbackUrl=/cart`);
+  }
   let cartItems: CartResponse | null = null;
   try {
     const cartRes = await cart.get("", {

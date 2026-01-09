@@ -40,9 +40,6 @@ export function SigninForm({
     const loginReq = signIn("credentials", {
       email: values.email,
       password: values.password,
-      callbackUrl: "/",
-
-      redirect: false,
     });
     toast.promise(loginReq, {
       loading: "برجاء الانتظار",

@@ -8,7 +8,7 @@ import {
   ShoppingCart02Icon,
   Menu03Icon,
 } from "@hugeicons/core-free-icons";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "./ui/drawer";
 import Image from "next/image";
 import { ImgHTMLAttributes, useState } from "react";
@@ -131,27 +131,30 @@ const AppNavbar = () => {
                       className="text-natural-700  max-sm:hidden"
                     />
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className={"py-1"}>
-                    <DropdownMenuItem className={"py-0.5"}>
-                      <AuthOnly>
-                        <Link href={"/settings"} className="w-full">
-                          <Button className={"w-full"} variant={"outline"}>
-                            حسابي
-                          </Button>
-                        </Link>
-                      </AuthOnly>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className={"py-0.5"}>
-                      <AuthOnly>
-                        <Button
-                          onClick={() => signOut()}
-                          className={"w-full"}
-                          variant={"outline"}
+                  <DropdownMenuContent className={"grid gap-1.5"}>
+                    <AuthOnly>
+                      <Link href={"/settings"} className="w-full">
+                        <DropdownMenuItem
+                          className={buttonVariants({
+                            variant: "outline",
+                            className: " w-full",
+                          })}
                         >
-                          تسجيل الخروج
-                        </Button>
-                      </AuthOnly>
-                    </DropdownMenuItem>
+                          حسابي
+                        </DropdownMenuItem>
+                      </Link>
+                    </AuthOnly>
+                    <AuthOnly>
+                      <DropdownMenuItem
+                        className={buttonVariants({
+                          variant: "outline",
+                          className: " w-full",
+                        })}
+                        onClick={() => signOut()}
+                      >
+                        تسجيل الخروج
+                      </DropdownMenuItem>
+                    </AuthOnly>
                   </DropdownMenuContent>
                 </DropdownMenu>
 

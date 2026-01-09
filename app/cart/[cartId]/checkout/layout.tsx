@@ -1,12 +1,25 @@
+import { NextAuthOptions } from "@/app/api/auth/[...nextauth]/route";
 import { Container } from "@/components/Container";
 import ShippingSummary from "@/components/ShippingSummary";
 import { cart } from "@/features/cart/api/api";
 import AddressFormProvider from "@/providers/AddressFormProvider";
 import { AddressProvider } from "@/providers/AddressProvider";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
-const CheckoutLayout = async ({ children }: { children: ReactNode }) => {
+const CheckoutLayout = async ({
+  children,
+  params,
+}: {
+  children: ReactNode;
+  params: Promise<{ cartId: string }>;
+}) => {
+  const { cartId } = await params;
+  const session = await getServerSession(NextAuthOptions);
+  if (!session) {
+    redirect(`/auth/signin?callbackUrl=/cart/${cartId}/checkout`);
+  }
   const cartRes = await cart.get("", {
     adapter: "fetch",
     fetchOptions: { cache: "force-cache" },
