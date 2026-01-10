@@ -9,22 +9,29 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { SignupFormValues, signupSchema } from "@/schema/signupSchema";
 import { AUTH_LINKS_ENUM } from "@/constants/Links";
 import WithAuthIllustration from "../WithAuthIllustration";
+import { Spinner } from "../ui/spinner";
+import { toast } from "sonner";
+import { User } from "@/features/users/api";
+import { useRouter } from "next/navigation";
 
 interface SignupFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function SignupForm({ className, ...props }: SignupFormProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [emailError, setEmailError] = useState<string>("");
-
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      fullName: "",
+      name: "",
       email: "",
       password: "",
       passwordConfirm: "",
@@ -32,28 +39,28 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
     },
   });
 
-  const handleEmailBlur = async (email: string) => {
-    if (!email || !form.formState.errors.email) {
-      setEmailError("");
-      return;
-    }
-
-    try {
-    } catch (error) {
-      console.error("Error checking email:", error);
-      setEmailError("");
-    }
-  };
-
+  const router = useRouter();
   const handleSubmit = async (data: SignupFormValues) => {
-    if (emailError) {
-      return;
-    }
-
-    setIsLoading(true);
     try {
-    } finally {
-      setIsLoading(false);
+      const signupRequest = User.signup(data);
+      await new Promise((res) => {
+        toast.promise(signupRequest, {
+          loading: "برجاء الانتظار",
+          success: (s) => {
+            console.log(s);
+            router.replace(AUTH_LINKS_ENUM.SIGNIN_PAGE);
+            return "تم انشاء الحساب";
+          },
+          error: (err) => {
+            return "خطاء تاكد من كلمة السر او البريد";
+          },
+          finally: res.bind(null, true),
+        });
+      });
+
+      // Add your signup logic here
+    } catch (error) {
+      console.error("Signup error:", error);
     }
   };
 
@@ -72,131 +79,168 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
                 </div>
 
                 <Form {...form}>
-                  <form
-                    onSubmit={form.handleSubmit(handleSubmit)}
-                    className="flex flex-col gap-6"
-                  >
-                    {/* Full Name Field */}
-                    <FormField
-                      control={form.control}
-                      name="fullName"
-                      render={({ field }) => (
-                        <FormItem className="grid gap-2">
-                          <Label htmlFor="fullName">الاسم الكامل</Label>
-                          <Input
-                            {...field}
-                            id="fullName"
-                            type="text"
-                            placeholder="أدخل اسمك الكامل"
-                            disabled={isLoading}
-                          />
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* Email Field */}
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem className="grid gap-2">
-                          <Label htmlFor="email">البريد الإلكتروني</Label>
-                          <Input
-                            {...field}
-                            id="email"
-                            type="email"
-                            placeholder="example@email.com"
-                            disabled={isLoading}
-                            onBlur={(e) => {
-                              field.onBlur();
-                              handleEmailBlur(e.target.value);
-                            }}
-                          />
-                          {emailError ? (
-                            <p className="text-sm font-medium text-destructive">
-                              {emailError}
-                            </p>
-                          ) : (
+                  <form onSubmit={form.handleSubmit(handleSubmit)}>
+                    <div className="flex flex-col gap-6">
+                      {/* Full Name Field */}
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem className="grid gap-2">
+                            <Label htmlFor="fullName">الاسم الكامل</Label>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                id="fullName"
+                                type="text"
+                                placeholder="أدخل اسمك الكامل"
+                              />
+                            </FormControl>
                             <FormMessage />
-                          )}
-                        </FormItem>
-                      )}
-                    />
+                          </FormItem>
+                        )}
+                      />
 
-                    {/* Password Field */}
-                    <FormField
-                      control={form.control}
-                      name="password"
-                      render={({ field }) => (
-                        <FormItem className="grid gap-2">
-                          <Label htmlFor="password">كلمة المرور</Label>
-                          <Input
-                            {...field}
-                            id="password"
-                            type="password"
-                            placeholder="أدخل كلمة المرور"
-                            disabled={isLoading}
-                          />
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                      {/* Email Field */}
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem className="grid gap-2">
+                            <Label htmlFor="email">البريد الإلكتروني</Label>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                id="email"
+                                type="email"
+                                className="font-sans"
+                                placeholder="m@example.com"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                    {/* Password Confirmation Field */}
-                    <FormField
-                      control={form.control}
-                      name="passwordConfirm"
-                      render={({ field }) => (
-                        <FormItem className="grid gap-2">
-                          <Label htmlFor="passwordConfirm">
-                            تأكيد كلمة المرور
-                          </Label>
-                          <Input
-                            {...field}
-                            id="passwordConfirm"
-                            type="password"
-                            placeholder="أعد إدخال كلمة المرور"
-                            disabled={isLoading}
-                          />
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                      {/* Password Field */}
+                      <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                          <FormItem className="grid gap-2">
+                            <Label htmlFor="password">كلمة المرور</Label>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                id="password"
+                                type="password"
+                                placeholder="أدخل كلمة المرور"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                    {/* Phone Field */}
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem className="grid gap-2">
-                          <Label htmlFor="phone">
-                            رقم الهاتف{" "}
-                            <span className="text-muted-foreground">
-                              (اختياري)
-                            </span>
-                          </Label>
-                          <Input
-                            {...field}
-                            id="phone"
-                            type="tel"
-                            placeholder="01xxxxxxxxx"
-                            disabled={isLoading}
-                          />
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                      {/* Password Confirmation Field */}
+                      <FormField
+                        control={form.control}
+                        name="passwordConfirm"
+                        render={({ field }) => (
+                          <FormItem className="grid gap-2">
+                            <Label htmlFor="passwordConfirm">
+                              تأكيد كلمة المرور
+                            </Label>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                id="passwordConfirm"
+                                type="password"
+                                placeholder="أعد إدخال كلمة المرور"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                    <Button
-                      type="submit"
-                      className="w-full"
-                      disabled={isLoading || !!emailError}
-                    >
-                      {isLoading ? "جاري إنشاء الحساب..." : "إنشاء حساب"}
-                    </Button>
+                      {/* Phone Field */}
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem className="grid gap-2">
+                            <Label htmlFor="phone">
+                              رقم الهاتف{" "}
+                              <span className="text-muted-foreground">
+                                (اختياري)
+                              </span>
+                            </Label>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                id="phone"
+                                type="tel"
+                                dir="rtl"
+                                placeholder="أدخل رقم الهاتف ٠١٢٣٤٥٦٧٨٩"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <Button
+                        className="w-full"
+                        type="submit"
+                        disabled={
+                          form.formState.isSubmitting ||
+                          form.formState.isLoading
+                        }
+                      >
+                        <span hidden={!form.formState.isSubmitting}>
+                          <Spinner className="animate animate-spin" />
+                        </span>
+                        {form.formState.isSubmitting
+                          ? "جاري إنشاء الحساب..."
+                          : "إنشاء حساب"}
+                      </Button>
+                    </div>
                   </form>
                 </Form>
+
+                {/* <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+                  <span className="relative z-10 bg-background px-2 text-muted-foreground">
+                    Or continue with
+                  </span>
+                </div> */}
+
+                <div className="grid items-center justify-center gap-4">
+                  {/* <Button
+                    variant="outline"
+                    type="button"
+                    className="w-full"
+                    disabled={form.formState.isSubmitting}
+                  >
+                    Apple
+                  </Button> */}
+                  {/* <Button
+                    variant="outline"
+                    type="button"
+                    size={"lg"}
+                    disabled={form.formState.isSubmitting}
+                  >
+                    Google
+                  </Button> */}
+                  {/* <Button
+                    variant="outline"
+                    type="button"
+                    className="w-full"
+                    disabled={form.formState.isSubmitting}
+                  >
+                    GitHub
+                  </Button> */}
+                </div>
 
                 <div className="text-center text-sm">
                   لديك حساب بالفعل؟
@@ -214,8 +258,8 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
       </Card>
 
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-        بالمتابعة، أنت توافق على <Link href="#">شروط الخدمة</Link> و{" "}
-        <Link href="#">سياسة الخصوصية</Link>.
+        بالمتابعة، أنت توافق على <a href="#">شروط الخدمة</a> و{" "}
+        <a href="#">سياسة الخصوصية</a>.
       </div>
     </div>
   );
