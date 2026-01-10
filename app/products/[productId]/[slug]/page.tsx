@@ -72,6 +72,7 @@ async function ProductPage({
     }
   );
   const reviews = productReviewsResponse.data.data;
+  console.log(reviews);
   return (
     <div>
       <Breadcrumb className="mt-5">
@@ -185,7 +186,10 @@ async function ProductPage({
                 loggedUserId={loggedUserSession?.user.id}
               />
             ))}
-            <MoreReviews initialPage={2} query="?limit=4" />
+            <MoreReviews
+              initialPage={2}
+              query={`?limit=4&product=${product._id}`}
+            />
           </div>
         </div>
       </section>

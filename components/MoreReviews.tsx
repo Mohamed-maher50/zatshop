@@ -9,7 +9,7 @@ import { Spinner } from "./ui/spinner";
 import { useSession } from "next-auth/react";
 
 const MoreReviews = ({
-  initialPage,
+  initialPage = 2,
   query,
 }: {
   initialPage: number;
@@ -29,7 +29,7 @@ const MoreReviews = ({
     try {
       setLoading(true);
       setHasError(false);
-
+      console.log(pageNum);
       const res = await Reviews.findMany(`?page=${pageNum}&${trimmedQuery}`);
 
       // Append new Review to existing ones
@@ -55,7 +55,7 @@ const MoreReviews = ({
     setPage(initialPage);
     setReview([]);
     setHasMore(true);
-    fetchReview(1);
+    fetchReview(initialPage);
   }, [trimmedQuery]);
 
   // Fetch next page
