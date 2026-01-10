@@ -6,13 +6,18 @@ import {
   UserCircleIcon,
   Search01Icon,
   ShoppingCart02Icon,
-  Menu03Icon,
   Menu01Icon,
 } from "@hugeicons/core-free-icons";
 import { Button, buttonVariants } from "./ui/button";
-import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "./ui/drawer";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerTitle,
+  DrawerTrigger,
+} from "./ui/drawer";
 import Image from "next/image";
-import { ImgHTMLAttributes, useState } from "react";
+import { Fragment, ImgHTMLAttributes, useState } from "react";
 import { cn } from "@/lib/utils";
 import AuthOnly from "./auth/OnlyAuth";
 import OnlyLogout from "./auth/OnlyLogout";
@@ -25,7 +30,18 @@ import {
 } from "./ui/dropdown-menu";
 import { signOut } from "next-auth/react";
 import { SearchDialog } from "./SearchDialog";
+import { ButtonGroup, ButtonGroupSeparator } from "./ui/button-group";
 const NAV_LINKS = [
+  {
+    id: 1,
+    label: "الرئسية",
+    href: "/",
+  },
+  {
+    id: 2,
+    label: "المنتجات",
+    href: "/products",
+  },
   {
     id: 3,
     label: "عنا",
@@ -36,16 +52,26 @@ const NAV_LINKS = [
     label: "التواصل معنا",
     href: "/contact",
   },
-  {
-    id: 2,
-    label: "المنتجات",
-    href: "/products",
-  },
-  {
-    id: 1,
-    label: "الرئسية",
-    href: "/",
-  },
+];
+
+type DRAWER_LINKS_TYPE = {
+  label: string;
+  href: string;
+  isProtected?: boolean;
+};
+const DRAWER_LINKS: DRAWER_LINKS_TYPE[] = [
+  { label: "الرئيسية", href: "/" },
+  { label: "المنتجات", href: "/products" },
+
+  { label: "عربة التسوق", href: "/cart", isProtected: true },
+  { label: "الطلبات", href: "/settings/orders", isProtected: true },
+
+  { label: "عناويني", href: "/settings/addresses", isProtected: true },
+  { label: "منتجات أعجبتني", href: "/settings/wishlist", isProtected: true },
+  { label: "الإعدادات", href: "/settings", isProtected: true },
+
+  { label: "عنا", href: "/about" },
+  { label: "التواصل معنا", href: "/contact" },
 ];
 export const Logo = ({
   className,
@@ -65,32 +91,73 @@ export const Logo = ({
 const AppNavbar = () => {
   const [isSearchDialogOpen, setSearchDialogOpen] = useState(false);
   return (
-    <div className="border-b border-b-[#CAC9CF]" dir="ltr">
-      <Drawer disablePreventScroll={false} modal direction="left">
+    <div className="border-b border-b-[#CAC9CF]">
+      <Drawer disablePreventScroll={false} modal direction="right">
         <Container>
           <nav className="flex  py-2.5 items-center justify-between">
             <DrawerContent className="px-10 flex-col flex gap-5">
-              <DrawerTitle className="py-4 text-xl font-garamond font-extrabold">
+              <DrawerTitle className="py-4 text-xl   flex justify-center font-garamond font-extrabold">
                 <Link href={"/"}>
                   <Logo />
                 </Link>
               </DrawerTitle>
               <div className="flex flex-col flex-1  gap-6 mt-8">
-                {NAV_LINKS.map((navLink) => {
+                {DRAWER_LINKS.map((navLink, idx) => {
+                  const ViewController = navLink.isProtected
+                    ? AuthOnly
+                    : Fragment;
                   return (
-                    <Link
-                      href={navLink.href}
-                      className="text-foreground text-sm capitalize hover:underline"
-                      key={navLink.id}
-                    >
-                      {navLink.label}
-                    </Link>
+                    <ViewController key={idx}>
+                      <DrawerClose key={idx} asChild>
+                        <Link
+                          href={navLink.href}
+                          className="text-foreground text-sm capitalize hover:underline"
+                        >
+                          {navLink.label}
+                        </Link>
+                      </DrawerClose>
+                    </ViewController>
                   );
                 })}
+
+                <AuthOnly>
+                  <DrawerClose asChild>
+                    <Button variant={"outline"} onClick={() => signOut()}>
+                      تسجيل الخروج
+                    </Button>
+                  </DrawerClose>
+                </AuthOnly>
+                <ButtonGroup
+                  orientation={"vertical"}
+                  className="w-full gap-1.5"
+                >
+                  <OnlyLogout>
+                    <DrawerClose asChild>
+                      <Link
+                        className={buttonVariants({ variant: "default" })}
+                        href={AUTH_LINKS_ENUM.SIGNIN_PAGE}
+                      >
+                        تسجيل الدخول
+                      </Link>
+                    </DrawerClose>
+                    <ButtonGroupSeparator
+                      orientation="horizontal"
+                      className={"bg-primary/10"}
+                    />
+                    <DrawerClose asChild>
+                      <Link
+                        className={buttonVariants({ variant: "secondary" })}
+                        href={AUTH_LINKS_ENUM.SIGNUP_PAGE}
+                      >
+                        انشاء حساب
+                      </Link>
+                    </DrawerClose>
+                  </OnlyLogout>
+                </ButtonGroup>
               </div>
             </DrawerContent>
             <DrawerTrigger asChild>
-              <Button variant={"ghost"} className={"hidden max-sm:block"}>
+              <Button variant={"ghost"} className={"hidden max-md:block"}>
                 <HugeiconsIcon
                   icon={Menu01Icon}
                   size={20}
@@ -103,7 +170,7 @@ const AppNavbar = () => {
                 <Logo />
               </Link>
             </div>
-            <div className="justify-between hidden sm:flex   gap-x-14.5">
+            <div className="justify-between hidden md:flex   gap-x-14.5">
               {NAV_LINKS.map((navLink) => {
                 return (
                   <Link
@@ -124,18 +191,26 @@ const AppNavbar = () => {
               <HugeiconsIcon
                 onClick={() => setSearchDialogOpen((prev) => !prev)}
                 icon={Search01Icon}
-                className="text-natural-700 max-sm:hidden"
+                className="text-natural-700 cursor-pointer max-sm:hidden"
                 size={20}
               />
               <AuthOnly>
+                <Link href={`/cart`}>
+                  <HugeiconsIcon
+                    icon={ShoppingCart02Icon}
+                    size={20}
+                    className="text-natural-700 max-sm:hidden"
+                  />
+                </Link>
                 <DropdownMenu>
                   <DropdownMenuTrigger className={"cursor-pointer"}>
                     <HugeiconsIcon
                       icon={UserCircleIcon}
                       size={20}
-                      className="text-natural-700  max-sm:hidden"
+                      className="text-natural-700  "
                     />
                   </DropdownMenuTrigger>
+
                   <DropdownMenuContent className={"grid gap-1.5"}>
                     <AuthOnly>
                       <Link href={"/settings"} className="w-full">
@@ -148,11 +223,21 @@ const AppNavbar = () => {
                           حسابي
                         </DropdownMenuItem>
                       </Link>
+                      <Link href={"/cart"} className="w-full">
+                        <DropdownMenuItem
+                          className={buttonVariants({
+                            variant: "outline",
+                            className: " w-full sm:hidden",
+                          })}
+                        >
+                          عربة التسوق
+                        </DropdownMenuItem>
+                      </Link>
                     </AuthOnly>
                     <AuthOnly>
                       <DropdownMenuItem
                         className={buttonVariants({
-                          variant: "outline",
+                          variant: "destructive",
                           className: " w-full",
                         })}
                         onClick={() => signOut()}
@@ -162,14 +247,6 @@ const AppNavbar = () => {
                     </AuthOnly>
                   </DropdownMenuContent>
                 </DropdownMenu>
-
-                <Link href={`/cart`}>
-                  <HugeiconsIcon
-                    icon={ShoppingCart02Icon}
-                    size={20}
-                    className="text-natural-700 "
-                  />
-                </Link>
               </AuthOnly>
               <OnlyLogout>
                 <Button variant={"outline"}>
