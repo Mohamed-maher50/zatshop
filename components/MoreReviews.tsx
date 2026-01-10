@@ -116,7 +116,7 @@ const MoreReviews = ({
         {/* No Results */}
         {!loading && Review.length === 0 && !hasError && (
           <div className="text-center col-span-full py-12 text-muted-foreground">
-            لا توجد منتجات
+            لا توجد تقييمات
           </div>
         )}
       </>

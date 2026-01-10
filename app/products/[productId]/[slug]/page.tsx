@@ -14,7 +14,6 @@ import {
 import ProductsGrid from "@/features/products/components/ProductsGrid";
 import HomeProductCard from "@/features/products/components/HomeProductCard";
 import ReviewCard from "@/features/reviews/ReviewCard";
-import { mockReviews } from "@/features/reviews/mock";
 import { Rating, RatingButton } from "@/components/ui/shadcn-io/rating";
 import ProductCarousel from "@/features/products/components/ProductCarousel";
 import { Products } from "@/features/api";
@@ -30,6 +29,8 @@ import { Reviews } from "@/features/reviews/api/api";
 import { getServerSession } from "next-auth";
 import { NextAuthOptions } from "@/app/api/auth/[...nextauth]/route";
 import MoreReviews from "@/components/MoreReviews";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { MessageCircle } from "lucide-react";
 
 async function ProductPage({
   params,
@@ -48,7 +49,6 @@ async function ProductPage({
   const productResponse = await Products.findOne(productId, ``);
 
   const product = productResponse.data;
-
   if (!product) notFound();
 
   const selectedVariant =
@@ -72,7 +72,6 @@ async function ProductPage({
     }
   );
   const reviews = productReviewsResponse.data.data;
-  console.log(reviews);
   return (
     <div>
       <Breadcrumb className="mt-5">
@@ -102,6 +101,7 @@ async function ProductPage({
             <div>
               <div className="flex items-center">
                 <Rating
+                  value={product.ratingsAverage}
                   readOnly
                   defaultValue={Math.floor(product.ratingsAverage)}
                 >
@@ -116,7 +116,7 @@ async function ProductPage({
               </div>
               <div className="flex">
                 المخزن :
-                {product.TotalStock ? (
+                {selectedVariant.stock ? (
                   <span className="text-green-500">متوفر في المخزن</span>
                 ) : (
                   <span className="text-destructive ">غير متوفر</span>
@@ -152,10 +152,10 @@ async function ProductPage({
           className="flex flex-col gap-y-12"
           hidden={recommendedProducts.length === 0}
         >
-          <span className="font-garamond text-natural-800 text-4xl font-bold uppercase">
+          <span className="font-garamond text-natural-800  text-xl lg:text-4xl font-bold uppercase">
             المنتجات المشابهه
           </span>
-          <ProductsGrid>
+          <ProductsGrid className="grid-cols-2">
             {recommendedProducts.map((product) => (
               <HomeProductCard key={product.title} product={product} />
             ))}
@@ -163,7 +163,7 @@ async function ProductPage({
         </div>
         <div className="flex flex-col gap-y-12">
           <div className="flex items-center justify-between">
-            <span className="font-garamond text-natural-800 text-4xl font-bold uppercase">
+            <span className="font-garamond text-natural-800  text-xl lg:text-4xl font-bold uppercase">
               تقييمات المنتج
               <span className="font-sans text-sm  text-muted-foreground">
                 ( {arabicNumber(product.reviews.length, "number")} )
@@ -174,6 +174,33 @@ async function ProductPage({
                 كتابة تقييم
               </DialogTrigger>
             </ReviewDialog>
+          </div>
+          <div
+            hidden={!!reviews.length}
+            className="w-full animate animate-in fade-in md:max-w-2xl  mx-auto"
+          >
+            <Alert className="flex! flex-col! items-center p-6 md:p-12 text-center">
+              <div className="flex flex-col items-center gap-4">
+                <MessageCircle className="md:h-12 h-10 w-10 md:w-12 text-muted-foreground" />
+                <AlertDescription
+                  className="text-gray-600 text-sm md:text-lg"
+                  dir="rtl"
+                >
+                  لا توجد مراجعات حتى الآن. كن أول من يشارك رأيه في هذا المنتج.
+                </AlertDescription>
+                <ReviewDialog productId={productId}>
+                  <DialogTrigger
+                    className={buttonVariants({
+                      size: "lg",
+                      variant: "outline",
+                      className: "px-7",
+                    })}
+                  >
+                    كتابة تقييم
+                  </DialogTrigger>
+                </ReviewDialog>
+              </div>
+            </Alert>
           </div>
           <div
             hidden={!reviews.length}
