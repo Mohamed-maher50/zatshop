@@ -228,69 +228,70 @@ export default async function Page() {
   const newestProducts = newestProductResponse.data;
 
   return (
-    <main className="min-h-screen flex flex-col gap-40 bg-linear-to-br ">
+    <main className="min-h-screen  bg-linear-to-br ">
       <HeroSection />
       <Container>
-        <section>
-          <SectionHeader
-            title={" الأكثر مبيعًا"}
-            description=" اكتشف منتجاتنا الأكثر مبيعًا، والتي اختارها عملاؤنا بعناية"
-          />
-          <ProductsGrid>
-            {mostSolidProducts.map((product) => (
-              <HomeProductCard key={product.title} product={product} />
-            ))}
-            <MoreProducts
-              initialPage={2}
-              query={`${HOME_MOST_RATING_PRODUCT_QUERY}`}
+        <div className=" flex flex-col gap-40">
+          <section className="">
+            <SectionHeader
+              title={" الأكثر مبيعًا"}
+              description=" اكتشف منتجاتنا الأكثر مبيعًا، والتي اختارها عملاؤنا بعناية"
             />
-          </ProductsGrid>
-        </section>
-        <section className="">
-          <div className="text-center mb-12 md:mb-16 space-y-4">
-            <p className="text-sm font-medium text-muted-foreground uppercase tracking-widest">
-              علاماتنا التجارية
-            </p>
-            <h2 className="text-3xl md:text-4xl font-light text-foreground text-balance">
-              تسوق حسب الماركة
-            </h2>
-            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              اكتشف أفضل العلامات التجارية المختارة بعناية، والتي تجمع بين
-              الجودة، الابتكار، والتصميم العصري لتلبية جميع احتياجاتك
-            </p>
-          </div>
-          <BrandCarousel brands={brands} />
-        </section>
-        <section>
-          <SectionHeader
-            title="أحدث ما وصل"
-            description="استكشف أحدث المنتجات التي وصلت حديثًا لمجموعتنا، واختر من بين أحدث الصيحات والجودة المضمونة"
-          />
-          <ProductsGrid>
-            {newestProducts.map((product) => (
-              <HomeProductCard key={product.title} product={product} />
-            ))}
-            <MoreProducts
-              initialPage={2}
-              query={`${HOME_MOST_RATING_PRODUCT_QUERY}`}
+            <ProductsGrid>
+              {mostSolidProducts.map((product) => (
+                <HomeProductCard key={product.title} product={product} />
+              ))}
+              <MoreProducts
+                initialPage={2}
+                query={`${HOME_MOST_RATING_PRODUCT_QUERY}`}
+              />
+            </ProductsGrid>
+          </section>
+          <section className="">
+            <div className="text-center mb-12 md:mb-16 space-y-4">
+              <p className="text-sm font-medium text-muted-foreground uppercase tracking-widest">
+                علاماتنا التجارية
+              </p>
+              <h2 className="text-3xl md:text-4xl font-light text-foreground text-balance">
+                تسوق حسب الماركة
+              </h2>
+              <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                اكتشف أفضل العلامات التجارية المختارة بعناية، والتي تجمع بين
+                الجودة، الابتكار، والتصميم العصري لتلبية جميع احتياجاتك
+              </p>
+            </div>
+            <BrandCarousel brands={brands} />
+          </section>
+          <section>
+            <SectionHeader
+              title="أحدث ما وصل"
+              description="استكشف أحدث المنتجات التي وصلت حديثًا لمجموعتنا، واختر من بين أحدث الصيحات والجودة المضمونة"
             />
-          </ProductsGrid>
-        </section>
-        <section>
-          <div className="text-center mb-12 md:mb-16 space-y-4">
-            <p className="text-sm font-medium text-muted-foreground uppercase tracking-widest">
-              مجموعاتنا
-            </p>
-            <h2 className="text-3xl md:text-4xl font-light text-foreground text-balance">
-              تسوق حسب الفئة
-            </h2>
-            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              استكشف مجموعاتنا المختارة بعناية من مستلزمات المنزل، التحف
-              الكلاسيكية، ومنتجات العناية والجمال
-            </p>
-          </div>
-          <CategoryCarousel categories={categories} showNavigation />
-          {/* <CategoriesGrid>
+            <ProductsGrid>
+              {newestProducts.map((product) => (
+                <HomeProductCard key={product.title} product={product} />
+              ))}
+              <MoreProducts
+                initialPage={2}
+                query={`${HOME_MOST_RATING_PRODUCT_QUERY}`}
+              />
+            </ProductsGrid>
+          </section>
+          <section>
+            <div className="text-center mb-12 md:mb-16 space-y-4">
+              <p className="text-sm font-medium text-muted-foreground uppercase tracking-widest">
+                مجموعاتنا
+              </p>
+              <h2 className="text-3xl md:text-4xl font-light text-foreground text-balance">
+                تسوق حسب الفئة
+              </h2>
+              <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                استكشف مجموعاتنا المختارة بعناية من مستلزمات المنزل، التحف
+                الكلاسيكية، ومنتجات العناية والجمال
+              </p>
+            </div>
+            <CategoryCarousel categories={categories} showNavigation />
+            {/* <CategoriesGrid>
           {categories.map((c) => {
               return (
                 <Link href={`/products?category=${c._id}`} key={c._id}>
@@ -299,23 +300,24 @@ export default async function Page() {
               );
             })}
         </CategoriesGrid> */}
-        </section>
+          </section>
 
-        <section>
-          <SectionHeader
-            title="الأعلى تقييماً"
-            description="اكتشف منتجاتنا التي حصلت على أعلى تقييمات من عملائنا، لضمان الجودة والرضا التام"
-          />
-          <ProductsGrid>
-            {mostRatingProducts.map((product) => (
-              <HomeProductCard key={product.title} product={product} />
-            ))}
-            <MoreProducts
-              initialPage={2}
-              query={`${HOME_MOST_RATING_PRODUCT_QUERY}`}
+          <section>
+            <SectionHeader
+              title="الأعلى تقييماً"
+              description="اكتشف منتجاتنا التي حصلت على أعلى تقييمات من عملائنا، لضمان الجودة والرضا التام"
             />
-          </ProductsGrid>
-        </section>
+            <ProductsGrid>
+              {mostRatingProducts.map((product) => (
+                <HomeProductCard key={product.title} product={product} />
+              ))}
+              <MoreProducts
+                initialPage={2}
+                query={`${HOME_MOST_RATING_PRODUCT_QUERY}`}
+              />
+            </ProductsGrid>
+          </section>
+        </div>
       </Container>
     </main>
   );
