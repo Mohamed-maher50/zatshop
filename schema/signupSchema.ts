@@ -5,7 +5,7 @@ const egyptianPhoneRegex = /^(\+20|0)?1[0125]\d{8}$/;
 
 export const signupSchema = z
   .object({
-    fullName: z
+    name: z
       .string({
         required_error: "Please tell us your name",
       })
@@ -74,7 +74,7 @@ export const signupSchema = z
     (data) => {
       // Check if password contains parts of email or name
       const emailLocal = data.email.split("@")[0].toLowerCase();
-      const nameParts = data.fullName.toLowerCase().split(" ");
+      const nameParts = data.name.toLowerCase().split(" ");
       const passwordLower = data.password.toLowerCase();
 
       return (
