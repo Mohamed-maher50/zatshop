@@ -23,6 +23,7 @@ import { FilterVerticalIcon } from "@hugeicons/core-free-icons";
 import { Brand, Category } from "@/types";
 import { parseAsString, useQueryStates } from "nuqs";
 import RestQueryButton from "./RestQueryButton";
+import { cn } from "@/lib/utils";
 
 /* ---------------- constants ---------------- */
 const PRICE = { MIN: 0, MAX: 90000, STEP: 100 };
@@ -271,12 +272,21 @@ function RatingFilter() {
 }
 function ApplyButton({
   children,
+  onClick,
   ...props
 }: React.ComponentProps<typeof Button>) {
   const { applyFilters } = useFilterContext();
 
   return (
-    <Button size="lg" className="w-full" onClick={applyFilters} {...props}>
+    <Button
+      size="lg"
+      className="w-full"
+      onClick={(e) => {
+        applyFilters();
+        onClick && onClick(e);
+      }}
+      {...props}
+    >
       {children || "تطبيق الفلتر"}
     </Button>
   );
@@ -284,6 +294,7 @@ function ApplyButton({
 
 const ResetButton = function ResetButton({
   children,
+  className,
   ...props
 }: React.ComponentProps<typeof Button>) {
   const { isFiltered } = useFilterContext();
@@ -295,7 +306,8 @@ const ResetButton = function ResetButton({
       hidden={isFiltered}
       size="lg"
       variant="outline"
-      className="w-full"
+      className={cn("w-full", className)}
+      {...props}
     >
       مسح التصنيف
     </RestQueryButton>

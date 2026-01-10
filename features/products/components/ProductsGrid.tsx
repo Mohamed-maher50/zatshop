@@ -10,7 +10,7 @@ const ProductsGrid = ({
   return (
     <div
       className={cn(
-        "grid gap-2.5 gap-y-12 md:gap-y-10    sm:grid-cols-2  md:grid-cols-2 lg:grid-cols-4  md:gap-7.5  ",
+        "grid gap-2.5 gap-y-12 md:gap-y-10    sm:grid-cols-2  md:grid-cols-2 lg:grid-cols-4  md:gap-3.5  ",
         className
       )}
       style={{ ...style }}

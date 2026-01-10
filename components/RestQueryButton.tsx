@@ -6,14 +6,17 @@ import { VariantProps } from "class-variance-authority";
 
 const RestQueryButton: FC<
   PropsWithChildren &
-    Omit<HtmlHTMLAttributes<HTMLButtonElement>, "children" | "onClick"> &
+    Omit<HtmlHTMLAttributes<HTMLButtonElement>, "children"> &
     VariantProps<typeof buttonVariants>
-> = ({ children, ...props }) => {
+> = ({ children, onClick, ...props }) => {
   const pathname = usePathname();
   const { replace } = useRouter();
   return (
     <Button
-      onClick={() => replace(`${pathname}`, { scroll: false })}
+      onClick={(e) => {
+        replace(`${pathname}`, { scroll: false });
+        onClick?.call(null, e);
+      }}
       {...props}
     >
       {children}

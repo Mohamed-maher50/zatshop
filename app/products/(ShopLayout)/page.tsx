@@ -90,7 +90,7 @@ const page = async ({
     <>
       <Drawer>
         <div className="flex gap-6 ">
-          <div className="max-sm:hidden w-72 divide-y pb-6">
+          <div className="max-md:hidden w-72 divide-y pb-6">
             <Sidebar.FiltrationSidebar
               categories={categories}
               brands={brands}
@@ -150,16 +150,22 @@ const page = async ({
                   <Sidebar.RatingFilter />
 
                   <Sidebar.Actions>
-                    <Sidebar.ApplyButton />
-                    <Sidebar.ResetButton />
+                    <DrawerClose asChild>
+                      <Sidebar.ApplyButton />
+                    </DrawerClose>
+                    <DrawerClose asChild>
+                      <Sidebar.ResetButton />
+                    </DrawerClose>
                   </Sidebar.Actions>
                 </Sidebar.FiltrationSidebar>
               </div>
             </ScrollArea>
           </DrawerContent>
           <div className="w-full">
-            <div className="flex mb-4 justify-between">
-              <div className="text-2xl md:text-3xl font-bold">{query}</div>
+            <div className="flex mb-4 items-center justify-between">
+              <div className="text-2xl md:text-3xl font-bold" hidden={!query}>
+                {query}
+              </div>
               <span className="text-sm text-muted-foreground md:text-lg">
                 <span className="mx-1">الصفحة</span>(
                 {arabicNumber(
@@ -168,16 +174,13 @@ const page = async ({
                 )}
                 )
               </span>
-              <div className="flex gap-2 items-center ">
-                <div className="max-sm:hidden">
-                  <DropdownFiltration />
-                </div>
-                <DrawerTrigger className="sm:hidden" asChild>
+              <div className="g:hidden">
+                <DropdownFiltration />
+              </div>
+              <div className="flex md:hidden gap-2 items-center ">
+                <DrawerTrigger className="" asChild>
                   <Button variant="outline">
-                    <HugeiconsIcon
-                      icon={FilterVerticalIcon}
-                      className="text-muted-foreground"
-                    />
+                    <HugeiconsIcon icon={FilterVerticalIcon} />
                   </Button>
                 </DrawerTrigger>
               </div>
@@ -185,7 +188,7 @@ const page = async ({
             <EmptyMessage isActive={!filteredProducts.length} />
             <ProductsGrid
               hidden={!filteredProducts.length}
-              className="grid-cols-2! lg:grid-cols-3!"
+              className="md:grid-cols-2! lg:grid-cols-3!"
             >
               {filteredProducts.map((product) => (
                 <HomeProductCard key={product.title} product={product} />

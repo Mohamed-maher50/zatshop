@@ -22,7 +22,7 @@ const DropdownFiltration = () => {
 
   return (
     <Select value={currentSort} onValueChange={handleSort}>
-      <SelectTrigger className="w-45 ring-0! border-0! shadow-none">
+      <SelectTrigger className="min-w-20 !shadow-none">
         <SelectValue placeholder="ترتيب حسب" />
       </SelectTrigger>
       <SelectContent className="rounded-none">
