@@ -21,6 +21,7 @@ import { LoginFormValues, loginSchema } from "@/lib/zod/authSchema";
 import { signIn, useSession } from "next-auth/react";
 import { toast } from "sonner";
 import WithAuthIllustration from "../WithAuthIllustration";
+import { Spinner } from "../ui/spinner";
 
 export function SigninForm({
   className,
@@ -35,25 +36,30 @@ export function SigninForm({
     },
   });
   const { status } = useSession();
+
   const isSessionLoading = status === "loading";
   async function onSubmit(values: LoginFormValues) {
     const loginReq = signIn("credentials", {
       email: values.email,
       password: values.password,
     });
-    toast.promise(loginReq, {
-      loading: "برجاء الانتظار",
-      success: (s) => {
-        return "تم التسجيل";
-      },
-      error: (err) => {
-        return "خطاء تاكد من كلمة السر او البريد";
-      },
+
+    await new Promise((res) => {
+      toast.promise(loginReq, {
+        loading: "برجاء الانتظار",
+        success: (s) => {
+          return "تم التسجيل";
+        },
+        error: (err) => {
+          return "خطاء تاكد من كلمة السر او البريد";
+        },
+        finally: res.bind(null, true),
+      });
     });
   }
 
   return (
-    <div className={cn("flex flex-col  gap-6", className)} {...props}>
+    <div className={cn("flex flex-col   gap-6", className)} {...props}>
       <Card className="overflow-hidden py-0">
         <CardContent className="grid p-0 md:grid-cols-2">
           <WithAuthIllustration>
@@ -80,6 +86,7 @@ export function SigninForm({
                                 {...field}
                                 id="email"
                                 type="email"
+                                className="font-sans"
                                 placeholder="m@example.com"
                               />
                             </FormControl>
@@ -135,8 +142,14 @@ export function SigninForm({
                       <Button
                         className="w-full"
                         type="submit"
-                        disabled={form.formState.isSubmitting}
+                        disabled={
+                          form.formState.isSubmitting ||
+                          form.formState.isLoading
+                        }
                       >
+                        <span hidden={!form.formState.isSubmitting}>
+                          <Spinner className="animate animate-spin" />
+                        </span>
                         {form.formState.isSubmitting
                           ? "جري التسيجل"
                           : " تسجيل الدخول "}

@@ -4,7 +4,6 @@ import { HTMLAttributes, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -66,9 +65,9 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
             <div className="p-6 md:p-8">
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-center text-center">
-                  <h1 className="text-2xl font-bold">Create Account</h1>
+                  <h1 className="text-2xl font-bold">إنشاء حساب</h1>
                   <p className="text-balance text-muted-foreground">
-                    Sign up to get started
+                    سجّل الآن للبدء
                   </p>
                 </div>
 
@@ -83,12 +82,12 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
                       name="fullName"
                       render={({ field }) => (
                         <FormItem className="grid gap-2">
-                          <Label htmlFor="fullName">Full Name</Label>
+                          <Label htmlFor="fullName">الاسم الكامل</Label>
                           <Input
                             {...field}
                             id="fullName"
                             type="text"
-                            placeholder="Enter your full name"
+                            placeholder="أدخل اسمك الكامل"
                             disabled={isLoading}
                           />
                           <FormMessage />
@@ -102,7 +101,7 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
                       name="email"
                       render={({ field }) => (
                         <FormItem className="grid gap-2">
-                          <Label htmlFor="email">Email Address</Label>
+                          <Label htmlFor="email">البريد الإلكتروني</Label>
                           <Input
                             {...field}
                             id="email"
@@ -131,12 +130,12 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
                       name="password"
                       render={({ field }) => (
                         <FormItem className="grid gap-2">
-                          <Label htmlFor="password">Password</Label>
+                          <Label htmlFor="password">كلمة المرور</Label>
                           <Input
                             {...field}
                             id="password"
                             type="password"
-                            placeholder="Enter password"
+                            placeholder="أدخل كلمة المرور"
                             disabled={isLoading}
                           />
                           <FormMessage />
@@ -151,13 +150,13 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
                       render={({ field }) => (
                         <FormItem className="grid gap-2">
                           <Label htmlFor="passwordConfirm">
-                            Confirm Password
+                            تأكيد كلمة المرور
                           </Label>
                           <Input
                             {...field}
                             id="passwordConfirm"
                             type="password"
-                            placeholder="Re-enter password"
+                            placeholder="أعد إدخال كلمة المرور"
                             disabled={isLoading}
                           />
                           <FormMessage />
@@ -172,9 +171,9 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
                       render={({ field }) => (
                         <FormItem className="grid gap-2">
                           <Label htmlFor="phone">
-                            Phone Number{" "}
+                            رقم الهاتف{" "}
                             <span className="text-muted-foreground">
-                              (optional)
+                              (اختياري)
                             </span>
                           </Label>
                           <Input
@@ -194,18 +193,18 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
                       className="w-full"
                       disabled={isLoading || !!emailError}
                     >
-                      {isLoading ? "Creating Account..." : "Create Account"}
+                      {isLoading ? "جاري إنشاء الحساب..." : "إنشاء حساب"}
                     </Button>
                   </form>
                 </Form>
 
                 <div className="text-center text-sm">
-                  Already have an account?
+                  لديك حساب بالفعل؟
                   <Link
-                    href={`/auth/${AUTH_LINKS_ENUM.SIGNIN_PAGE}`}
+                    href={AUTH_LINKS_ENUM.SIGNIN_PAGE}
                     className="underline mx-2 underline-offset-4"
                   >
-                    Sign in
+                    تسجيل الدخول
                   </Link>
                 </div>
               </div>
@@ -215,8 +214,8 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
       </Card>
 
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-        By continuing, you agree to our <Link href="#">Terms of Service</Link>{" "}
-        and <Link href="#">Privacy Policy</Link>.
+        بالمتابعة، أنت توافق على <Link href="#">شروط الخدمة</Link> و{" "}
+        <Link href="#">سياسة الخصوصية</Link>.
       </div>
     </div>
   );
