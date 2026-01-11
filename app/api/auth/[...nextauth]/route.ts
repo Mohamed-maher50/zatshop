@@ -1,10 +1,17 @@
 import { AUTH_LINKS_ENUM } from "@/constants/Links";
 import { Login } from "@/features/auth/api";
+import api from "@/lib/axios";
 import { loginSchema } from "@/lib/zod/authSchema";
+import axios from "axios";
 import NextAuth, { AuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 export const NextAuthOptions: AuthOptions = {
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
     Credentials({
       name: "credentials",
       credentials: {
@@ -52,6 +59,8 @@ export const NextAuthOptions: AuthOptions = {
       return baseUrl;
     },
     jwt({ token, user }) {
+      console.log(user);
+      console.log(token);
       if (user) {
         return {
           ...token,
@@ -67,6 +76,22 @@ export const NextAuthOptions: AuthOptions = {
       session.user.role = token.role;
       session.user.accessToken = token.accessToken;
       return session;
+    },
+    async signIn({ account, user }) {
+      if (account?.provider === "google") {
+        const { data: dbUser } = await api.post("/auth/google", {
+          id_token: account.id_token,
+        });
+        if (!dbUser) return false;
+        const { data, token } = dbUser;
+        if (user) {
+          user.id = data._id;
+          user.role = data.role;
+          user.accessToken = token;
+          return true;
+        }
+      }
+      return false;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,

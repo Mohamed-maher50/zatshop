@@ -22,6 +22,7 @@ import { signIn, useSession } from "next-auth/react";
 import { toast } from "sonner";
 import WithAuthIllustration from "../WithAuthIllustration";
 import { Spinner } from "../ui/spinner";
+import Image from "next/image";
 
 export function SigninForm({
   className,
@@ -164,31 +165,40 @@ export function SigninForm({
                   </span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
-                  <Button
+                <div className="grid px-28 gap-4">
+                  {/* <Button
                     variant="outline"
                     type="button"
                     className="w-full"
                     disabled={form.formState.isSubmitting || isSessionLoading}
                   >
                     Apple
-                  </Button>
+                  </Button> */}
                   <Button
-                    variant="outline"
-                    type="button"
-                    className="w-full"
+                    variant={"outline"}
+                    onClick={() => signIn("google")}
                     disabled={form.formState.isSubmitting || isSessionLoading}
+                    className="px-4 py-2 border flex gap-2 border-slate-200 dark:border-slate-700  text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150"
                   >
-                    Google
+                    <Image
+                      width={16}
+                      height={16}
+                      className="w-4 h-4"
+                      src="/google-color.svg"
+                      loading="lazy"
+                      alt="google logo"
+                    />
+                    <span>التسجيل عبر جوجل</span>
                   </Button>
-                  <Button
+
+                  {/* <Button
                     variant="outline"
                     type="button"
                     className="w-full"
                     disabled={form.formState.isSubmitting || isSessionLoading}
                   >
                     GitHub
-                  </Button>
+                  </Button> */}
                 </div>
 
                 <div className="text-center text-sm">
