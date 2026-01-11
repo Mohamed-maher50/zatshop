@@ -24,7 +24,7 @@ export async function OrdersTab({ orders }: { orders: Order[] }) {
             key={order._id}
             className="bg-card border-border overflow-hidden"
           >
-            <CardHeader className="bg-muted/30 pb-4">
+            <CardHeader className=" pb-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
