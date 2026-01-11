@@ -7,6 +7,7 @@ import {
   Search01Icon,
   ShoppingCart02Icon,
   Menu01Icon,
+  UserIcon,
 } from "@hugeicons/core-free-icons";
 import { Button, buttonVariants } from "./ui/button";
 import {
@@ -249,9 +250,13 @@ const AppNavbar = () => {
                 </DropdownMenu>
               </AuthOnly>
               <OnlyLogout>
-                <Button variant={"outline"}>
-                  <Link href={AUTH_LINKS_ENUM.SIGNIN_PAGE}>تسجيل الدخول</Link>
-                </Button>
+                <Link href={AUTH_LINKS_ENUM.SIGNIN_PAGE}>
+                  <HugeiconsIcon
+                    icon={UserCircleIcon}
+                    size={20}
+                    className="text-natural-700  "
+                  />
+                </Link>
               </OnlyLogout>
             </div>
           </nav>

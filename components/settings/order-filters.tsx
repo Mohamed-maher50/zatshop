@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import RestQueryButton from "../RestQueryButton";
 
 type Filter = {
   label: string;
@@ -81,7 +82,6 @@ const filters: Filter[] = [
 
 export function OrderFilters() {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const updateFilter = (key: string, value: string) => {
@@ -91,8 +91,6 @@ export function OrderFilters() {
     router.push(`?${params.toString()}`);
   };
 
-  const clearFilters = () => router.push(pathname);
-
   return (
     <div className="w-full">
       <div className="flex items-end gap-3 flex-wrap">
@@ -100,9 +98,6 @@ export function OrderFilters() {
         {filters.map((selectValues) => {
           return (
             <div key={selectValues.key} className="flex flex-col gap-2">
-              <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                {/* {selectValues.label} */}
-              </label>
               <Select
                 value={
                   searchParams.get(selectValues.key) || selectValues.default
@@ -126,18 +121,10 @@ export function OrderFilters() {
           );
         })}
 
-        {
-          <Button
-            onClick={clearFilters}
-            variant="outline"
-            size="sm"
-            disabled={!`${searchParams}`}
-            className="h-9 px-3 gap-1 text-xs border-border/50 bg-transparent"
-          >
-            <X className="w-3 h-3" />
-            مسح الفلتر
-          </Button>
-        }
+        <RestQueryButton variant={"outline"}>
+          <X className="w-3 h-3" />
+          مسح
+        </RestQueryButton>
       </div>
     </div>
   );

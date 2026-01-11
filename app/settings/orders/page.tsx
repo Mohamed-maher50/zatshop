@@ -1,4 +1,5 @@
 import { NextAuthOptions } from "@/app/api/auth/[...nextauth]/route";
+import MobileOrdersFiltration from "@/components/settings/MobileOrdersFiltration";
 import { OrderFilters } from "@/components/settings/order-filters";
 import { OrdersTab } from "@/components/settings/OrdersTab";
 import { Orders } from "@/features/orders/api/api";
@@ -17,8 +18,13 @@ const page = async ({ searchParams }: { searchParams: Promise<string> }) => {
 
   return (
     <>
-      <OrderFilters />
-      <OrdersTab orders={orders} />;
+      <div className="hidden md:block">
+        <OrderFilters />
+      </div>
+      <div className="md:hidden">
+        <MobileOrdersFiltration />
+      </div>
+      <OrdersTab orders={orders} />
     </>
   );
 };
