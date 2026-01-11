@@ -59,8 +59,6 @@ export const NextAuthOptions: AuthOptions = {
       return baseUrl;
     },
     jwt({ token, user }) {
-      console.log(user);
-      console.log(token);
       if (user) {
         return {
           ...token,
@@ -89,9 +87,11 @@ export const NextAuthOptions: AuthOptions = {
           user.role = data.role;
           user.accessToken = token;
           return true;
+        } else {
+          return false;
         }
       }
-      return false;
+      return true;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,

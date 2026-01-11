@@ -5,7 +5,7 @@ const SettingLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <header className="mb-10 space-y-4">
+        {/* <header className="mb-10 space-y-4">
           <h1 className="text-4xl sm:text-5xl font-black tracking-tighter">
             لوحة تحكم الحساب
           </h1>
@@ -13,9 +13,11 @@ const SettingLayout = async ({ children }: { children: ReactNode }) => {
             إدارة معلوماتك الشخصية، متابعة الطلبات، وتنظيم قائمة الأمنيات الخاصة
             بك.
           </p>
-        </header>
+        </header> */}
         <div className="space-y-10  bg-background/80 ">
-          <NavigationTabs />
+          <div className="hidden md:block">
+            <NavigationTabs />
+          </div>
           {children}
 
           {/* <TabsContent

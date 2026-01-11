@@ -165,7 +165,7 @@ export function SigninForm({
                   </span>
                 </div>
 
-                <div className="grid px-28 gap-4">
+                <div className="grid  gap-4">
                   {/* <Button
                     variant="outline"
                     type="button"
