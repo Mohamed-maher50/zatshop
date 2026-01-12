@@ -173,6 +173,9 @@ dependencies:
   shadcn:
     specifier: latest
     version: 3.6.2(@types/node@22.19.3)(hono@4.11.3)(typescript@5.9.3)
+  shallowequal:
+    specifier: ^1.1.0
+    version: 1.1.0
   sonner:
     specifier: latest
     version: 2.0.7(react-dom@19.2.3)(react@19.2.3)
@@ -202,6 +205,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^19
     version: 19.2.3(@types/react@19.2.7)
+  '@types/shallowequal':
+    specifier: ^1.1.5
+    version: 1.1.5
   postcss:
     specifier: ^8.5
     version: 8.5.6
@@ -2907,6 +2913,10 @@ packages:
     dependencies:
       csstype: 3.2.3
 
+  /@types/shallowequal@1.1.5:
+    resolution: {integrity: sha512-8afr1hbNqvZ/FBMY2mcfkkbk7xhlTZN4lVCgQf55YdjUQpWLemmrcvcHg94vjw+ZVIfPa3UZz/sOE6CkaMlDnQ==}
+    dev: true
+
   /@types/statuses@2.0.6:
     resolution: {integrity: sha512-xMAgYwceFhRA2zY+XbEA7mxYbA093wdiW8Vu6gZPGWy9cmOyU9XesH1tNcEWsKFd5Vzrqx5T3D38PWx1FIIXkA==}
     dev: false
@@ -5236,6 +5246,10 @@ packages:
       - hono
       - supports-color
       - typescript
+    dev: false
+
+  /shallowequal@1.1.0:
+    resolution: {integrity: sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==}
     dev: false
 
   /sharp@0.34.5:

@@ -9,11 +9,8 @@ const page = async () => {
     <>
       {/* Main Content */}
       <div className="animate-in fade-in slide-in-from-right-8 duration-700 space-y-12">
-        <span className="shrink-0 w-8 h-8font-mono flex items-center justify-center rounded-sm text-sm font-bold">
-          {Number(1).toLocaleString()}
-        </span>
-        <div className="space-y-6 w-full">
-          <h2 className="text-2xl font-bold tracking-tight pt-1">
+        <div className=" grow h-full w-full">
+          <h2 className="text-2xl mb-10 font-bold tracking-tight pt-1">
             عنوان الشحن
           </h2>
 

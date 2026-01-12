@@ -45,7 +45,7 @@ const CheckoutLayout = async ({
 
         <AddressProvider>
           <AddressFormProvider>
-            <section className=" w-full  grid md:grid-cols-2 gap-12">
+            <section className=" w-full h-full  grid lg:grid-cols-2 gap-12">
               {children}
               {/* Sidebar / Summary */}
               <ShippingSummary items={cartItems.items} cartInfo={cartItems} />

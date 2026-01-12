@@ -43,7 +43,7 @@ export const User = {
       data
     ),
   newAddress: async (data: Omit<Address, "_id">) =>
-    await api.post<null, AxiosResponse<apiResponse<Address>>>(
+    await api.post<null, AxiosResponse<apiResponse<Address[]>>>(
       `/addresses`,
       data
     ),

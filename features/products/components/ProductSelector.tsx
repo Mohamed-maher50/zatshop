@@ -1,19 +1,19 @@
 "use client";
+import AuthOnly from "@/components/auth/OnlyAuth";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
 import { useBayProduct } from "@/providers/BayProductProvider";
-import { Product } from "@/types";
-import { FavouriteIcon } from "@hugeicons/core-free-icons";
+import { FavouriteIcon, Loading03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
-import {
-  redirect,
-  useParams,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { redirect, useParams, useSearchParams } from "next/navigation";
 import { useState } from "react";
+
+import WithLike from "@/features/wishlist/components/WithLike";
+import LikeButton, {
+  WithWishlistButton,
+} from "@/features/wishlist/components/LikeButton";
 
 const ProductSelector = () => {
   const { updateQuantity, quantity, addItem } = useBayProduct();
@@ -70,9 +70,7 @@ const ProductSelector = () => {
         >
           اضافة للعربة
         </Button>
-        <Button variant={"outline"} className={""} size={"lg"}>
-          <HugeiconsIcon icon={FavouriteIcon} size={20} className="" />
-        </Button>
+        <WithWishlistButton productId={productId as string} />
       </div>
     </>
   );

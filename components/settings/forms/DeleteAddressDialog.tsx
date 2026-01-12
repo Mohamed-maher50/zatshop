@@ -36,8 +36,11 @@ const DeleteAddressDialog = ({ addressId }: { addressId: string }) => {
       <DialogContent className={"p-10"}>
         <DialogTitle>هل انت متاكد من انك تريد حذف العنوان</DialogTitle>
         <DialogFooter className="flex gap-2.5">
-          <DialogClose ref={closeRef}>
-            <Button variant={"secondary"}>لا</Button>
+          <DialogClose
+            ref={closeRef}
+            className={buttonVariants({ variant: "secondary" })}
+          >
+            لا
           </DialogClose>
           <Button
             variant={"destructive"}

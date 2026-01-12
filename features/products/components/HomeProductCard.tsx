@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { WithWishlistButton } from "@/features/wishlist/components/LikeButton";
 import { arabicNumber } from "@/lib/arabicNumber";
 import type { Product, VariantOption } from "@/types";
 import { Star, Truck } from "lucide-react";
@@ -62,12 +63,16 @@ const HomeProductCard = ({ product }: { product: Product }) => {
 
   return (
     <Card
-      className="group h-full overflow-hidden max-sm:py-0 my-0! gap-0! border border-border/50 bg-card/50 transition-all duration-300 hover:border-border hover:bg-card hover:shadow-sm"
+      className="group relative h-full overflow-hidden max-sm:py-0 my-0! gap-0! border border-border/50 bg-card/50 transition-all duration-300 hover:border-border hover:bg-card hover:shadow-sm"
       style={{ borderRadius: 0 }}
     >
       {/* Image Container - Responsive Height */}
       <div className="relative overflow-hidden bg-secondary/30">
         <div className="relative w-full h-40 sm:h-56 md:h-64 lg:h-72">
+          <div className={"absolute z-20 bottom-4 right-4"}>
+            <WithWishlistButton productId={product._id} />
+          </div>
+
           <Image
             fill
             src={product.imageCover.url || "/image.png"}

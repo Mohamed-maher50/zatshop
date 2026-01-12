@@ -5,6 +5,7 @@ import { useFormContext } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import shallowequal from "shallowequal";
 import {
   FormControl,
   FormField,
@@ -26,6 +27,8 @@ import {
 import { useAddress } from "@/providers/AddressProvider";
 import { Spinner } from "@/components/ui/spinner";
 import { useParams, useRouter } from "next/navigation";
+import { User } from "@/features/users/api";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   firstName: z.string().min(1, "الاسم الأول مطلوب"),
@@ -36,12 +39,11 @@ const formSchema = z.object({
   city: z.string().min(1, "المدينة مطلوبة"),
   phone: z.string().min(11, "رقم الهاتف مطلوب"),
 });
-
-type ShippingValues = z.infer<typeof formSchema>;
+export type ShippingValues = z.infer<typeof formSchema>;
 
 export function ShippingForm() {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const { selectedAddress } = useAddress();
+  const { selectedAddress, setSelectedAddress } = useAddress();
 
   const form = useFormContext<ShippingValues>();
   const selectedGovernorate = form.watch("governorate");
@@ -49,15 +51,47 @@ export function ShippingForm() {
   const isSavingAddress = Boolean(
     !selectedAddress && form.formState.isSubmitting
   );
+  const city = form.watch("city");
+
   const router = useRouter();
   const params = useParams();
   React.useEffect(() => {
-    return form.setValue("city", selectedAddress?.city || "");
-  }, [selectedGovernorate]);
-
+    if (selectedAddress) return form.setValue("city", selectedAddress?.city);
+    if (!selectedAddress && city) {
+      return form.setValue("city", city);
+    }
+  }, [selectedGovernorate || selectedAddress]);
   const onSubmit = async (data: ShippingValues) => {
+    setIsSubmitting(true);
     if (selectedAddress) {
       router.push(`/cart/${params.cartId}/checkout/method`);
+      setIsSubmitting(false);
+    } else {
+      const newAddressRequest = User.newAddress(data);
+      await new Promise((res) => {
+        toast.promise(newAddressRequest, {
+          success: (res) => {
+            const address = res.data.data.find((address) => {
+              const { _id, ...otherFields } = address;
+              return shallowequal(data, otherFields);
+            });
+            if (address) {
+              setSelectedAddress(address);
+              localStorage.removeItem("shippingAddress");
+              form.reset(address);
+            }
+            return "تم حفظ العنوان";
+          },
+          error: "حدث خطاء اثناء الحفظ",
+          loading: "جرى حفظ العنوان",
+
+          finally() {
+            setIsSubmitting(false);
+            router.push(`/cart/${params.cartId}/checkout/method`);
+            res(true);
+          },
+        });
+      });
     }
   };
   const handleGovernorateChange = async (value: string) => {
@@ -76,9 +110,9 @@ export function ShippingForm() {
     <form
       dir="rtl"
       onSubmit={form.handleSubmit(onSubmit)}
-      className="space-y-8  duration-500"
+      className="space-y-8 mt-4 h-full min-h-full duration-500"
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <FormField
           control={form.control}
           name="firstName"
@@ -107,7 +141,7 @@ export function ShippingForm() {
         />
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 ">
         <FormField
           control={form.control}
           name="address"
@@ -129,7 +163,7 @@ export function ShippingForm() {
           )}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <FormField
             control={form.control}
             name="governorate"
@@ -203,7 +237,7 @@ export function ShippingForm() {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <FormField
             control={form.control}
             name="phone"
@@ -240,14 +274,14 @@ export function ShippingForm() {
         </div>
       </div>
 
-      <div className="pt-6 border-t border-white/5">
+      <div className="pt-6 border-t mt-auto border-white/5">
         <Button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !form.formState.isDirty}
           className="w-full h-14 font-bold uppercase tracking-widest  transition-transform active:scale-[0.98] disabled:opacity-50"
         >
-          {form.formState.isSubmitting && <Spinner className="animate-spain" />}
-          {submitText}
+          {form.formState.isSubmitting && <Spinner className="animate-spin" />}
+          <span className="animate animate-in fade-in">{submitText}</span>
         </Button>
         <p className="text-[10px] text-center mt-4 uppercase tracking-widest">
           بحفظ عنوانك، فإنك توافق على شروط الخدمة الخاصة بنا

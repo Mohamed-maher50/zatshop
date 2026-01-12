@@ -11,11 +11,14 @@ import { Label } from "./ui/label";
 import { cn } from "@/lib/utils";
 import { Check, MapPin } from "lucide-react";
 import { useAddress } from "@/providers/AddressProvider";
+import { useFormContext } from "react-hook-form";
+import { ShippingValues } from "@/features/orders/components/CheckoutForm";
+
 const CarouselAddresses = ({ addresses }: { addresses: Address[] }) => {
   const { setSelectedAddress, selectedAddress } = useAddress();
   return (
     <div className="relative z-30 isolate">
-      <Carousel dir="ltr" className="w-full pt-5 ">
+      <Carousel dir="ltr" className="w-full pt-5 " hidden={!addresses.length}>
         <CarouselContent dir="ltr" className=" -ml-1  ">
           {addresses.map((address) => (
             <CarouselItem

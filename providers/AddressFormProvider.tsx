@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { useAddress } from "./AddressProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
@@ -29,9 +29,26 @@ const AddressFormProvider = ({ children }: { children: ReactNode }) => {
       city: initialValues?.city || "",
       phone: initialValues?.phone || "",
     },
-    values: selectedAddress || initialValues,
     disabled: !!selectedAddress,
   });
+
+  useEffect(() => {
+    if (form.formState.isDirty && selectedAddress) {
+      const values = form.getValues();
+      localStorage.setItem("shippingAddress", JSON.stringify(values));
+      form.reset(selectedAddress, { keepDefaultValues: true });
+    }
+    if (!selectedAddress) {
+      const jsonPreviousAddress = localStorage.getItem("shippingAddress");
+      const previousAddress =
+        jsonPreviousAddress &&
+        (JSON.parse(jsonPreviousAddress) as addressFormValues);
+      return form.reset(previousAddress || initialValues, {
+        keepDefaultValues: true,
+      });
+    }
+  }, [selectedAddress]);
+
   return <Form {...form}>{children}</Form>;
 };
 

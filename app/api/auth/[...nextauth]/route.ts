@@ -2,7 +2,6 @@ import { AUTH_LINKS_ENUM } from "@/constants/Links";
 import { Login } from "@/features/auth/api";
 import api from "@/lib/axios";
 import { loginSchema } from "@/lib/zod/authSchema";
-import axios from "axios";
 import NextAuth, { AuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -58,7 +57,10 @@ export const NextAuthOptions: AuthOptions = {
 
       return baseUrl;
     },
-    jwt({ token, user }) {
+    jwt({ token, user, trigger, session }) {
+      if (trigger === "update" && session) {
+        token.wishlist = session.wishlist;
+      }
       if (user) {
         return {
           ...token,
@@ -70,6 +72,8 @@ export const NextAuthOptions: AuthOptions = {
       return token;
     },
     session({ session, token }) {
+      if (token && token.wishlist) session.user.wishlist = token.wishlist;
+
       session.user.id = token.id;
       session.user.role = token.role;
       session.user.accessToken = token.accessToken;
@@ -98,7 +102,6 @@ export const NextAuthOptions: AuthOptions = {
   pages: {
     signIn: AUTH_LINKS_ENUM.SIGNIN_PAGE,
   },
-  debug: true,
 };
 const handler = NextAuth(NextAuthOptions);
 

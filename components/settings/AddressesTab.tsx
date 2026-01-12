@@ -8,6 +8,17 @@ import { DialogTrigger } from "../ui/dialog";
 
 import { User } from "@/features/users/api";
 import DeleteAddressDialog from "./forms/DeleteAddressDialog";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "../ui/empty";
+import { HugeiconsIcon } from "@hugeicons/react";
+import RestQueryButton from "../RestQueryButton";
+import { Location08Icon } from "@hugeicons/core-free-icons";
 
 export async function AddressesTab() {
   const addressesResponse = await User.getAddresses();
@@ -26,6 +37,32 @@ export async function AddressesTab() {
           </DialogTrigger>
         </AddressDialog>
       </div>
+      <Empty hidden={!!data.data.length} className="min-h-96">
+        <EmptyHeader>
+          <EmptyMedia variant="default">
+            <HugeiconsIcon className="size-8" icon={Location08Icon} />
+          </EmptyMedia>
+          <EmptyTitle>لا توجد عناوين محفوظة</EmptyTitle>
+          <EmptyDescription>
+            لم تقم بإضافة أي عنوان بعد. أضف عنوانك الآن لتسهيل وتسريع عملية
+            الشراء.
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <AddressDialog>
+            <DialogTrigger
+              className={buttonVariants({
+                size: "sm",
+                variant: "secondary",
+                className: "gap-2",
+              })}
+            >
+              <Plus className="w-4 h-4" />
+              إضافة عنوان
+            </DialogTrigger>
+          </AddressDialog>
+        </EmptyContent>
+      </Empty>
 
       <div className="grid gap-6 sm:grid-cols-2">
         {data.data.map((address) => (
