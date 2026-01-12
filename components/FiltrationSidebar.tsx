@@ -70,6 +70,7 @@ export function useOrdersQuery() {
     ["price[gte]"]: parseAsString.withDefault(`${PRICE.MIN}`),
     ["price[lte]"]: parseAsString.withDefault(`${PRICE.MAX}`),
     rating: parseAsString.withDefault(""),
+    page: parseAsString.withDefault(""),
   });
 }
 
@@ -111,7 +112,7 @@ const FiltrationSidebar = ({
       },
       {}
     );
-    setQuery(s, { scroll: true, shallow: false });
+    setQuery({ ...s, page: "" }, { scroll: true, shallow: false });
   };
 
   const onPriceChange = (key: string, value: string) => {

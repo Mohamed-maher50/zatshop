@@ -1,6 +1,3 @@
-import { Slider } from "@/components/ui/slider";
-
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,44 +5,6 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Close } from "@hugeicons/core-free-icons";
-const categories = [
-  {
-    name: "Electronics",
-    subcategories: ["Phones", "Laptops", "Cameras", "Accessories"],
-  },
-  {
-    name: "Fashion",
-    subcategories: ["Men", "Women", "Shoes", "Bags"],
-  },
-  {
-    name: "Books",
-    subcategories: ["Fiction", "Non-fiction", "Children", "Education"],
-  },
-  {
-    name: "Sports",
-    subcategories: ["Fitness", "Football", "Cycling", "Swimming"],
-  },
-  {
-    name: "Home",
-    subcategories: ["Furniture", "Kitchen", "Decor", "Lighting"],
-  },
-  {
-    name: "Beauty",
-    subcategories: ["Makeup", "Skincare", "Haircare"],
-  },
-  {
-    name: "Toys",
-    subcategories: ["Action Figures", "Puzzles", "Educational"],
-  },
-  {
-    name: "Automotive",
-    subcategories: ["Car Care", "Accessories", "Tools"],
-  },
-];
-
-
 
 export default function ProductsLayout({
   children,

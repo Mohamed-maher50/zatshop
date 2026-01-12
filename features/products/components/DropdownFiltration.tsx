@@ -17,6 +17,8 @@ const DropdownFiltration = () => {
     const params = new URLSearchParams(searchParams);
     if (value) params.set("sort", value);
     else params.delete("sort");
+    params.delete("page");
+
     replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
