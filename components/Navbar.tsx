@@ -217,7 +217,7 @@ const AppNavbar = ({ cartItems }: { cartItems: number }) => {
                 <Link href={`/cart`} className="relative isolate">
                   <span
                     hidden={!cartItems}
-                    className="absolute -top-1/2 text-[10px]  -right-1/2 bg-primary text-primary-foreground size-3 sm:size-4 rounded-full flex text-center leading-5 justify-center items-center"
+                    className="absolute -top-1 text-[10px] leading-none  -right-1.5 bg-primary text-primary-foreground size-3 sm:size-4 rounded-full flex justify-center items-center"
                   >
                     <span>{cartItems}</span>
                   </span>
