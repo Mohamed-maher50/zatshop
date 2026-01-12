@@ -13,6 +13,7 @@ import { getServerSession } from "next-auth";
 import { NextAuthOptions } from "../../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export interface CartItem {
   id: string;
@@ -48,12 +49,17 @@ const CartPage = async () => {
         </span>
       </div>
 
-      <div className="">
-        {cartItems.data.items.map((product) => {
+      <div className="flex flex-col gap-2">
+        {cartItems.data.items.map((product, idx) => {
           return (
             <Card
               key={product.variantSku}
-              className="  flex! w-full  sm:flex-row!  sm:items-center border-b-primary "
+              className={cn(
+                " animate-in fade-in slide-in-from-right-10 duration-700    flex! w-full  sm:flex-row!  sm:items-center border-b-primary "
+              )}
+              style={{
+                animationDelay: `${idx * 100}ms`, // or `${idx * 0.1}s`
+              }}
             >
               <CardContent className="flex   grow items-center justify-start  font-semibold text-sm  text-justify">
                 <div className="relative min-w-[100px] min-h-[100px]">
