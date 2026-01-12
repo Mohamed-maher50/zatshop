@@ -30,7 +30,9 @@ const DeleteProductCart = ({ title, sku }: { title: string; sku: string }) => {
   };
   return (
     <Dialog>
-      <DialogTrigger className={buttonVariants({ variant: "ghost" })}>
+      <DialogTrigger
+        className={buttonVariants({ variant: "outline", size: "sm" })}
+      >
         <HugeiconsIcon icon={Delete} />
       </DialogTrigger>
       <DialogContent className={"p-10!"}>
