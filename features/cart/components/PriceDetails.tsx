@@ -27,7 +27,7 @@ const PriceDetails = async () => {
   if (!cartItems || cartItems.numOfCartItems == 0) return <EmptyCartMessage />;
   return (
     <div className="flex flex-col grow  gap-4">
-      <Card className="bg-primary/2  grow animate-in  duration-1000   fade-in   shadow-xs">
+      <Card className="bg-primary/2 px-0!  grow animate-in  duration-1000   fade-in   shadow-xs">
         <CardContent className="">
           <CardHeader className="my-2 px-0!">
             <CardTitle className="text-lg font-semibold">
@@ -37,7 +37,7 @@ const PriceDetails = async () => {
           <ApplyCouponForm appliedCoupon={cartItems.data.coupon} />
         </CardContent>
       </Card>
-      <Card className=" grow animate-in slide-in-from-left-10 ease-in-out fade-in-50 duration-500 p-14 flex  flex-col bg-primary/2 shadow-xs max-sm:w-full ">
+      <Card className=" grow px-0! animate-in slide-in-from-left-10 ease-in-out fade-in-50 duration-500 p-14 flex  flex-col bg-primary/2 shadow-xs max-sm:w-full ">
         <CardHeader>
           <CardTitle className="text-xl font-semibold ">
             تفاصيل الفاتورة
