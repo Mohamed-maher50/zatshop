@@ -7,7 +7,6 @@ import {
   Search01Icon,
   ShoppingCart02Icon,
   Menu01Icon,
-  UserIcon,
 } from "@hugeicons/core-free-icons";
 import { Button, buttonVariants } from "./ui/button";
 import {
@@ -18,7 +17,7 @@ import {
   DrawerTrigger,
 } from "./ui/drawer";
 import Image from "next/image";
-import { Fragment, ImgHTMLAttributes, useState } from "react";
+import { Fragment, ImgHTMLAttributes, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import AuthOnly from "./auth/OnlyAuth";
 import OnlyLogout from "./auth/OnlyLogout";
@@ -89,10 +88,30 @@ export const Logo = ({
     />
   );
 };
-const AppNavbar = () => {
+const AppNavbar = ({ cartItems }: { cartItems: number }) => {
   const [isSearchDialogOpen, setSearchDialogOpen] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
-    <div className="border-b border-b-[#CAC9CF]">
+    <div
+      className={cn(
+        " top-0 z-50 duration-300 animate  animate-in slide-in-from-bottom ",
+        isSticky
+          ? "sticky  bg-background border-b-[#CAC9CF]  border-b "
+          : "relative "
+      )}
+    >
       <Drawer disablePreventScroll={false} modal direction="right">
         <Container>
           <nav className="flex  py-2.5 items-center justify-between">
@@ -176,7 +195,7 @@ const AppNavbar = () => {
                 return (
                   <Link
                     href={navLink.href}
-                    className="text-foreground text-sm bg-background capitalize"
+                    className="text-foreground text-sm  capitalize"
                     key={navLink.id}
                   >
                     {navLink.label}
@@ -196,11 +215,17 @@ const AppNavbar = () => {
                 size={20}
               />
               <AuthOnly>
-                <Link href={`/cart`}>
+                <Link href={`/cart`} className="relative isolate">
+                  <span
+                    hidden={!cartItems}
+                    className="absolute -top-1/2 text-xs  -right-1/2 bg-primary text-primary-foreground size-4 rounded-full flex justify-center items-center"
+                  >
+                    {cartItems}
+                  </span>
                   <HugeiconsIcon
                     icon={ShoppingCart02Icon}
                     size={20}
-                    className="text-natural-700 max-sm:hidden"
+                    className="text-natural-700 "
                   />
                 </Link>
                 <DropdownMenu>
@@ -211,7 +236,6 @@ const AppNavbar = () => {
                       className="text-natural-700  "
                     />
                   </DropdownMenuTrigger>
-
                   <DropdownMenuContent className={"grid gap-1.5"}>
                     <AuthOnly>
                       <Link href={"/settings"} className="w-full">

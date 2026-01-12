@@ -29,7 +29,6 @@ const MoreReviews = ({
     try {
       setLoading(true);
       setHasError(false);
-      console.log(pageNum);
       const res = await Reviews.findMany(`?page=${pageNum}&${trimmedQuery}`);
 
       // Append new Review to existing ones

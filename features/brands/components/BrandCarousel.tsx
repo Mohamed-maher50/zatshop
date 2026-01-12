@@ -61,7 +61,7 @@ export function BrandCarousel({
             {brands.map((brand) => (
               <CarouselItem
                 key={brand._id}
-                className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/4"
+                className="pl-2 md:pl-4 basis-1/2 lg:basis-1/4"
               >
                 <div className="h-full">
                   <Link href={`/products?brand=${brand._id}`}>

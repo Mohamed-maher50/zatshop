@@ -30,7 +30,6 @@ const DeleteReviewDialog = ({
     setIsDeleting(true);
     try {
       const res = await Reviews.deleteReview(reviewId);
-      console.log(res);
       toast.success("تم حذف التقييم");
       closeRef.current?.click();
       router.refresh();

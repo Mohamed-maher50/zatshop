@@ -228,7 +228,7 @@ export default async function Page() {
   const newestProducts = newestProductResponse.data;
 
   return (
-    <main className="min-h-screen  bg-linear-to-br ">
+    <main className="min-h-screen  bg">
       <HeroSection />
       <Container>
         <div className=" flex flex-col gap-40">

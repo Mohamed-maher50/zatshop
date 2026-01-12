@@ -47,7 +47,6 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
         toast.promise(signupRequest, {
           loading: "برجاء الانتظار",
           success: (s) => {
-            console.log(s);
             router.replace(AUTH_LINKS_ENUM.SIGNIN_PAGE);
             return "تم انشاء الحساب";
           },

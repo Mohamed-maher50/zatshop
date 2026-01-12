@@ -63,7 +63,7 @@ const HomeProductCard = ({ product }: { product: Product }) => {
 
   return (
     <Card
-      className="group relative h-full overflow-hidden max-sm:py-0 my-0! gap-0! border border-border/50 bg-card/50 transition-all duration-300 hover:border-border hover:bg-card hover:shadow-sm"
+      className="group relative h-full isolate overflow-hidden max-sm:py-0 my-0! gap-0! border border-border/50 bg-card/50 transition-all duration-300 hover:border-border hover:bg-card hover:shadow-sm"
       style={{ borderRadius: 0 }}
     >
       {/* Image Container - Responsive Height */}

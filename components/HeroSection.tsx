@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const HeroSection = () => {
   return (
-    <section className="relative w-full py-20 md:py-32  lg:py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-secondary to-background">
+    <section className="relative w-full py-20 md:py-32  lg:py-16 px-4 sm:px-6 lg:px-8 bg-linear-to-b from-background to-background">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* المحتوى الأيسر */}

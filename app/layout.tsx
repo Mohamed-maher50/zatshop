@@ -13,6 +13,8 @@ import {
   Loading03Icon,
   Tick02Icon,
 } from "@hugeicons/core-free-icons";
+import { CartResponse } from "@/types/carts";
+import { cart } from "@/features/cart/api/api";
 
 const tajawal = Tajawal({
   subsets: ["arabic", "latin"],
@@ -27,16 +29,24 @@ export const metadata: Metadata = {
   generator: "v0.app",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let cartItems: CartResponse | null = null;
+  try {
+    const cartRes = await cart.get("", {
+      adapter: "fetch",
+      fetchOptions: { cache: "no-store" },
+    });
+    cartItems = cartRes.data;
+  } catch (error) {}
   return (
     <html lang="en" dir="rtl" className={`${tajawal.variable}`}>
       <body className="antialiased font-tajawal ">
         <AuthSessionProvider>
-          <AppNavbar />
+          <AppNavbar cartItems={cartItems?.data.items.length || 0} />
 
           <NuqsAdapter>{children}</NuqsAdapter>
           <Footer />

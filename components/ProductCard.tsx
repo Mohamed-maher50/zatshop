@@ -86,7 +86,6 @@ export function ProductCard({
   onAddToCart,
   disabled = false,
 }: ProductCardProps) {
-  console.log(product.options);
   /* ---------------- State ---------------- */
 
   const [selectedAttributes, setSelectedAttributes] = useState<
