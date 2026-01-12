@@ -1,10 +1,15 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import WithLike, { WithLikeProps } from "./WithLike";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { FavouriteIcon, Loading03Icon } from "@hugeicons/core-free-icons";
 import { cn } from "@/lib/utils";
+import { HTMLAttributes } from "react";
+import { VariantProps } from "class-variance-authority";
 
-interface WishlistButtonProps extends WithLikeProps {
+interface WishlistButtonProps
+  extends WithLikeProps,
+    HTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
   productId: string;
 }
 const LikeButton = ({
@@ -14,14 +19,16 @@ const LikeButton = ({
   toggleLike,
   wishlist,
   productId,
+  ...attr
 }: WishlistButtonProps) => {
   return (
     <Button
-      variant={"outline"}
+      variant={"secondary"}
       hidden={!isAuthenticated}
       onClick={toggleLike.bind(null, productId)}
-      size={"lg"}
+      size={"icon-sm"}
       disabled={isLikeProcess}
+      {...attr}
     >
       <HugeiconsIcon
         icon={isLikeProcess ? Loading03Icon : FavouriteIcon}

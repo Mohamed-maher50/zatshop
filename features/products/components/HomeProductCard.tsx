@@ -68,7 +68,7 @@ const HomeProductCard = ({ product }: { product: Product }) => {
     >
       {/* Image Container - Responsive Height */}
       <div className="relative overflow-hidden bg-secondary/30">
-        <div className="relative w-full h-40 sm:h-56 md:h-64 lg:h-72">
+        <div className="relative w-full  h-56 md:h-64 lg:h-72">
           <div className={"absolute z-20 bottom-4 right-4"}>
             <WithWishlistButton productId={product._id} />
           </div>

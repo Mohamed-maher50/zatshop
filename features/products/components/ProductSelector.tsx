@@ -10,11 +10,11 @@ import { useSession } from "next-auth/react";
 import { redirect, useParams, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-import WithLike from "@/features/wishlist/components/WithLike";
 import LikeButton, {
   WithWishlistButton,
 } from "@/features/wishlist/components/LikeButton";
-
+import WithLike from "@/features/wishlist/components/WithLike";
+const ProductLikeButton = WithLike(LikeButton);
 const ProductSelector = () => {
   const { updateQuantity, quantity, addItem } = useBayProduct();
   const [isRequiredLogin, setIsRequiredLogin] = useState(false);
@@ -70,7 +70,7 @@ const ProductSelector = () => {
         >
           اضافة للعربة
         </Button>
-        <WithWishlistButton productId={productId as string} />
+        <ProductLikeButton size={"lg"} productId={productId as string} />
       </div>
     </>
   );
