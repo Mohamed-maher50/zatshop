@@ -203,7 +203,7 @@ const AppNavbar = ({ cartItems }: { cartItems: number }) => {
                 );
               })}
             </div>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3 md:gap-3.5">
               <SearchDialog
                 isOpen={isSearchDialogOpen}
                 onClose={() => setSearchDialogOpen((prev) => !prev)}
@@ -212,20 +212,18 @@ const AppNavbar = ({ cartItems }: { cartItems: number }) => {
                 onClick={() => setSearchDialogOpen((prev) => !prev)}
                 icon={Search01Icon}
                 className="text-natural-700 cursor-pointer max-sm:hidden"
-                size={20}
               />
               <AuthOnly>
                 <Link href={`/cart`} className="relative isolate">
                   <span
                     hidden={!cartItems}
-                    className="absolute -top-1/2 text-xs  -right-1/2 bg-primary text-primary-foreground size-4 rounded-full flex justify-center items-center"
+                    className="absolute -top-1/2 text-[10px]  -right-1/2 bg-primary text-primary-foreground size-3 sm:size-4 rounded-full flex text-center leading-5 justify-center items-center"
                   >
-                    {cartItems}
+                    <span>{cartItems}</span>
                   </span>
                   <HugeiconsIcon
                     icon={ShoppingCart02Icon}
-                    size={20}
-                    className="text-natural-700 "
+                    className="text-natural-700 size-4 sm:size-5 "
                   />
                 </Link>
                 <DropdownMenu>
