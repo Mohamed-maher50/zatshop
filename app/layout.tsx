@@ -51,6 +51,7 @@ export default async function RootLayout({
           <NuqsAdapter>{children}</NuqsAdapter>
           <Footer />
           <Toaster
+            closeButton
             position="top-center"
             richColors
             toastOptions={{

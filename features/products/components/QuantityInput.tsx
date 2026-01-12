@@ -33,12 +33,12 @@ const QuantityInput = ({
           setQuantity1(Math.max(0, quantity1 - 1));
           debounceOnSubmit(quantity1 - 1);
         }}
-        size="lg"
-        variant="outline"
+        size="sm"
+        variant="ghost"
       >
         <MinusIcon />
       </Button>
-      <ButtonGroupText className="min-w-12 justify-center">
+      <ButtonGroupText className="border-none bg-transparent justify-center">
         {quantity1}
       </ButtonGroupText>
       <Button
@@ -46,8 +46,8 @@ const QuantityInput = ({
           setQuantity1(quantity1 + 1);
           debounceOnSubmit(quantity1 + 1);
         }}
-        size="lg"
-        variant="outline"
+        size="sm"
+        variant="ghost"
       >
         <PlusIcon />
       </Button>

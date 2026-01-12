@@ -6,15 +6,16 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import PriceDetails from "@/features/cart/components/PriceDetails";
 export default function CartLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <main className=" min-h-screen ">
+    <main className=" py-10 min-h-screen ">
       <Container>
-        <div className="pt-5">
+        <div className="pt-5 flex w-full flex-col gap-2.5">
           <Breadcrumb className="mt-5">
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -24,7 +25,12 @@ export default function CartLayout({
               <BreadcrumbItem>العربه</BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          {children}
+          <div className="lg:flex grid w-full gap-5 items-start">
+            <div className=" flex-1">{children}</div>
+            <div className=" flex-1   ">
+              <PriceDetails />
+            </div>
+          </div>
         </div>
       </Container>
     </main>

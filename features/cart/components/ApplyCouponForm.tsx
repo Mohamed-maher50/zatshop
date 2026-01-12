@@ -44,15 +44,12 @@ const ApplyCouponForm = ({ appliedCoupon }: { appliedCoupon?: string }) => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="grid mt-10 grid-rows-2 max-w-96 gap-2.5 grid-cols-3"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex  gap-2.5">
         <FormField
           control={form.control}
           name="couponName"
           render={({ field }) => (
-            <FormItem className="col-span-2 sm:col-span-2">
+            <FormItem className="">
               <FormControl>
                 <Input
                   {...field}
