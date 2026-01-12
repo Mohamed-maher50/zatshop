@@ -30,6 +30,9 @@ import { arabicNumber } from "@/lib/arabicNumber";
 import { Close, FilterVerticalIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { FolderCode } from "lucide-react";
+import WithSuspense from "@/components/WithSuspense";
+import RootLoading from "@/app/loading";
+
 const EmptyMessage = ({ isActive }: { isActive: boolean }) => (
   <Empty className="mt-20" hidden={!isActive}>
     <EmptyHeader>
@@ -71,7 +74,16 @@ const page = async ({
     fetchOptions: { cache: "force-cache" },
   });
   const filteredProductsRequest = Products.findMany(
-    `?${searchParamsQueries}&limit=2`
+    `?${searchParamsQueries}&limit=2`,
+    {
+      adapter: "fetch",
+      fetchOptions: {
+        cache: "force-cache",
+        next: {
+          revalidate: 60 * 60,
+        },
+      },
+    }
   );
 
   const [brandsResponse, categoriesResponse, filteredProductsResponse] =
@@ -84,7 +96,7 @@ const page = async ({
   // page data
   const brands = brandsResponse.data.data;
   const categories = categoriesResponse.data.data;
-  const filteredProducts = filteredProductsResponse.data;
+  const filteredProducts = filteredProductsResponse.data.data;
 
   return (
     <>
@@ -169,7 +181,7 @@ const page = async ({
               <span className="text-sm text-muted-foreground md:text-lg">
                 <span className="mx-1">الصفحة</span>(
                 {arabicNumber(
-                  filteredProductsResponse.paginationResult.currentPage,
+                  filteredProductsResponse.data.paginationResult.currentPage,
                   "number"
                 )}
                 )
@@ -197,10 +209,14 @@ const page = async ({
           </div>
         </div>
         <div
-          hidden={filteredProductsResponse.paginationResult.numberOfPages <= 1}
+          hidden={
+            filteredProductsResponse.data.paginationResult.numberOfPages <= 1
+          }
         >
           <Pagination
-            totalPages={filteredProductsResponse.paginationResult.numberOfPages}
+            totalPages={
+              filteredProductsResponse.data.paginationResult.numberOfPages
+            }
           />
         </div>
       </Drawer>
@@ -208,4 +224,4 @@ const page = async ({
   );
 };
 
-export default page;
+export default WithSuspense(page, <RootLoading />);

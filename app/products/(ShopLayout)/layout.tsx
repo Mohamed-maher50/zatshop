@@ -25,6 +25,7 @@ export default function ProductsLayout({
 
       <main className=" min-h-screen pt-12 ">
         <div className="mb-6"></div>
+
         {children}
       </main>
     </>
