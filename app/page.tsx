@@ -223,9 +223,9 @@ export default async function Page() {
 
   const brands = BrandResponse.data.data;
   const categories = categoriesResponse.data.data;
-  const mostSolidProducts = mostSolidProductsResponse.data;
-  const mostRatingProducts = mostRatingProductResponse.data;
-  const newestProducts = newestProductResponse.data;
+  const mostSolidProducts = mostSolidProductsResponse.data.data;
+  const mostRatingProducts = mostRatingProductResponse.data.data;
+  const newestProducts = newestProductResponse.data.data;
 
   return (
     <main className="min-h-screen  bg">

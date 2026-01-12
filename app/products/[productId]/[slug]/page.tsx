@@ -150,13 +150,13 @@ async function ProductPage({
       <section className="py-10 flex flex-col gap-y-12">
         <div
           className="flex flex-col gap-y-12"
-          hidden={recommendedProducts.length === 0}
+          hidden={recommendedProducts.data.length === 0}
         >
           <span className="font-garamond text-natural-800  text-xl lg:text-4xl font-bold uppercase">
             المنتجات المشابهه
           </span>
           <ProductsGrid className="grid-cols-2">
-            {recommendedProducts.map((product) => (
+            {recommendedProducts.data.map((product) => (
               <HomeProductCard key={product.title} product={product} />
             ))}
           </ProductsGrid>

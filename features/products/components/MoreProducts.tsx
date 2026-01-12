@@ -32,13 +32,14 @@ const MoreProducts = ({ initialPage = 1, query }: MoreProductsProps) => {
 
       // Append new products to existing ones
       setProducts((prev) =>
-        pageNum === 1 ? res.data : [...prev, ...res.data]
+        pageNum === 1 ? res.data.data : [...prev, ...res.data.data]
       );
 
       // Check if there's more data
       const isLastPage =
-        res.paginationResult.currentPage === res.paginationResult.numberOfPages;
-      setHasMore(!isLastPage && !!res.paginationResult.nextPage);
+        res.data.paginationResult.currentPage ===
+        res.data.paginationResult.numberOfPages;
+      setHasMore(!isLastPage && !!res.data.paginationResult.nextPage);
     } catch (error) {
       console.error("Failed to fetch products:", error);
       setHasError(true);
