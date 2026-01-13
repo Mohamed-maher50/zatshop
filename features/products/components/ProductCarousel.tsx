@@ -27,13 +27,18 @@ const ProductCarousel = ({ images }: { images: string[] }) => {
           containScroll: false,
         }}
       >
-        <CarouselContent className="h-[35rem] mx-0! gap-4 w-full">
+        <CarouselContent className="h-[35rem] max-h-[31rem] mx-0! gap-4 w-full">
           {images.map((img, index) => (
             <CarouselItem
               key={index}
               className="relative w-full px-0 h-full overflow-hidden"
             >
-              <Image src={img} alt="" fill className="absolute inset-0" />
+              <Image
+                src={img}
+                alt=""
+                fill
+                className="absolute object-cover inset-0"
+              />
             </CarouselItem>
           ))}
         </CarouselContent>

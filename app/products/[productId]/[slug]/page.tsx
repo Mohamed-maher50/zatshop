@@ -91,7 +91,7 @@ async function ProductPage({
         initialProduct={product}
         selectedVariant={selectedVariant}
       >
-        <div className="md:flex  mt-12 gap-16">
+        <div className="md:flex grid mt-12 gap-10 md:gap-16">
           <ProductCarousel images={product.images.map((i) => i.url)} />
           <div className="flex-1 gap-3 flex flex-col">
             <h1 className="text-xl text-natural-800 font-semibold">
@@ -202,10 +202,7 @@ async function ProductPage({
               </div>
             </Alert>
           </div>
-          <div
-            hidden={!reviews.length}
-            className="grid  md:grid-cols-2 grid-rows-2 gap-2"
-          >
+          <div hidden={!reviews.length} className="grid  md:grid-cols-2 gap-2">
             {reviews.map((review) => (
               <ReviewCard
                 key={review._id}
@@ -213,10 +210,12 @@ async function ProductPage({
                 loggedUserId={loggedUserSession?.user.id}
               />
             ))}
-            <MoreReviews
-              initialPage={2}
-              query={`?limit=4&product=${product._id}`}
-            />
+            {reviews.length >= 2 && (
+              <MoreReviews
+                initialPage={2}
+                query={`?limit=4&product=${product._id}`}
+              />
+            )}
           </div>
         </div>
       </section>
