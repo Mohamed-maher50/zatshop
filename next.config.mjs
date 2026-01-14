@@ -11,6 +11,17 @@ const nextConfig = {
       fullUrl: true,
     },
   },
+  headers: () => [
+    {
+      source: "/cached/:path*",
+      headers: [
+        {
+          key: "cache-control",
+          value: "public, max-age=31531000, immutable",
+        },
+      ],
+    },
+  ],
 };
 
 export default nextConfig;

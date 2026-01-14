@@ -80,8 +80,8 @@ export const Logo = ({
   return (
     <Image
       alt="zat logo"
-      className={cn("object-cover ", className)}
-      src={"/Gemini_Generated_Image_2i3do2i3do2i3do2-removebg-preview.png"}
+      className={cn("object-cover max-sm:w-28!  max-sm:h-7", className)}
+      src={"/Gemini_Generated_Image_wz6iuawz6iuawz6i-removebg-preview.png"}
       width={145}
       height={38}
       {...props}
@@ -118,7 +118,7 @@ const AppNavbar = ({ cartItems }: { cartItems: number }) => {
             <DrawerContent className="px-10 flex-col flex gap-5">
               <DrawerTitle className="py-4 text-xl   flex justify-center font-garamond font-extrabold">
                 <Link href={"/"}>
-                  <Logo />
+                  <Logo className="object-cover  " />
                 </Link>
               </DrawerTitle>
               <div className="flex flex-col flex-1  gap-6 mt-8">

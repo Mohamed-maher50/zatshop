@@ -25,6 +25,7 @@ const PriceDetails = async () => {
   } catch (error) {}
 
   if (!cartItems || cartItems.numOfCartItems == 0) return <EmptyCartMessage />;
+  console.log(cartItems.data._id);
   return (
     <div className="flex flex-col grow  gap-4">
       <Card className="bg-primary/2 px-0!  grow animate-in  duration-1000   fade-in   shadow-xs">
@@ -93,10 +94,7 @@ const PriceDetails = async () => {
           </div>
         </CardContent>
         <CardFooter>
-          <Link
-            className="grow"
-            href={`/cart/${"cartItems.data._id"}/checkout`}
-          >
+          <Link className="grow" href={`/cart/${cartItems.data._id}/checkout`}>
             <Button
               variant={"default"}
               className={"text-sm  grow   w-full font-semibold"}

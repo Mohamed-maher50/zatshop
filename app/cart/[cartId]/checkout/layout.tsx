@@ -3,7 +3,6 @@ import { Container } from "@/components/Container";
 import ShippingSummary from "@/components/ShippingSummary";
 import { cart } from "@/features/cart/api/api";
 import AddressFormProvider from "@/providers/AddressFormProvider";
-import { AddressProvider } from "@/providers/AddressProvider";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
@@ -42,16 +41,13 @@ const CheckoutLayout = async ({
             والمواد المادية للفعالية.
           </p>
         </section>
-
-        <AddressProvider>
-          <AddressFormProvider>
-            <section className=" w-full h-full  grid lg:grid-cols-2 gap-12">
-              {children}
-              {/* Sidebar / Summary */}
-              <ShippingSummary items={cartItems.items} cartInfo={cartItems} />
-            </section>
-          </AddressFormProvider>
-        </AddressProvider>
+        <AddressFormProvider>
+          <section className=" w-full h-full  grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {children}
+            {/* Sidebar / Summary */}
+            <ShippingSummary items={cartItems.items} cartInfo={cartItems} />
+          </section>
+        </AddressFormProvider>
         {/* Footer */}
         <footer className="border-t border-white/10 py-12 px-6 mt-12 text-center text-white/20 text-xs tracking-widest uppercase">
           © 2026 Vercel Inc. All rights reserved.

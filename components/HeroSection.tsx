@@ -31,7 +31,7 @@ const HeroSection = () => {
           {/* الصورة اليمنى */}
           <div className="w-full h-96  relative md:h-96 lg:h-[38.6rem]  overflow-hidden bg-muted border border-border/50">
             <Image
-              src="/modern-home-decor-lifestyle-collection.jpg"
+              src="/cached/modern-home-decor-lifestyle-collection.jpg"
               alt="عرض مجموعة منزلية مختارة بعناية"
               className="w-full h-full object-cover"
               fill

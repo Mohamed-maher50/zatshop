@@ -1,7 +1,7 @@
 "use client";
 
-import * as React from "react";
-import { useFormContext } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,11 +24,11 @@ import {
   citiesByGovernorate,
   governorates,
 } from "@/components/settings/forms/AddressDialog";
-import { useAddress } from "@/providers/AddressProvider";
 import { Spinner } from "@/components/ui/spinner";
 import { useParams, useRouter } from "next/navigation";
 import { User } from "@/features/users/api";
 import { toast } from "sonner";
+import { combineAddressOperationFormValues } from "@/schema/AddressSchema";
 
 const formSchema = z.object({
   firstName: z.string().min(1, "الاسم الأول مطلوب"),
@@ -42,28 +42,20 @@ const formSchema = z.object({
 export type ShippingValues = z.infer<typeof formSchema>;
 
 export function ShippingForm() {
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const { selectedAddress, setSelectedAddress } = useAddress();
+  useState;
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const form = useFormContext<ShippingValues>();
-  const selectedGovernorate = form.watch("governorate");
-  const isPaying = Boolean(selectedAddress && form.formState.isSubmitting);
-  const isSavingAddress = Boolean(
-    !selectedAddress && form.formState.isSubmitting
-  );
-  const city = form.watch("city");
+  const form = useFormContext<combineAddressOperationFormValues>();
+  const isPaying = Boolean(true && form.formState.isSubmitting);
+  const isSavingAddress = Boolean(true && form.formState.isSubmitting);
 
   const router = useRouter();
   const params = useParams();
-  React.useEffect(() => {
-    if (selectedAddress) return form.setValue("city", selectedAddress?.city);
-    if (!selectedAddress && city) {
-      return form.setValue("city", city);
-    }
-  }, [selectedGovernorate || selectedAddress]);
+  const isNewAddress = form.watch("isNewAddress");
+
   const onSubmit = async (data: ShippingValues) => {
     setIsSubmitting(true);
-    if (selectedAddress) {
+    if (!isNewAddress) {
       router.push(`/cart/${params.cartId}/checkout/method`);
       setIsSubmitting(false);
     } else {
@@ -76,8 +68,7 @@ export function ShippingForm() {
               return shallowequal(data, otherFields);
             });
             if (address) {
-              setSelectedAddress(address);
-              localStorage.removeItem("shippingAddress");
+              sessionStorage.removeItem("shippingAddress");
               form.reset(address);
             }
             return "تم حفظ العنوان";
@@ -96,14 +87,17 @@ export function ShippingForm() {
   };
   const handleGovernorateChange = async (value: string) => {
     form.setValue("governorate", value);
-    form.setValue("city", ""); // reset city when governorate changes
   };
+
+  const selectedGovernorate = form.watch("governorate");
+  const availableCities = citiesByGovernorate[selectedGovernorate];
+  const isInputDisabled = !isNewAddress;
 
   const submitText = isPaying
     ? "جاري الدفع..."
     : isSavingAddress
     ? "جاري حفظ العنوان..."
-    : selectedAddress
+    : !isNewAddress
     ? "دفع"
     : "حفظ العنوان و متابعة الدفع";
   return (
@@ -120,7 +114,11 @@ export function ShippingForm() {
             <FormItem>
               <FormLabel>الاسم الأول</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="أحمد" />
+                <Input
+                  {...field}
+                  placeholder="أحمد"
+                  disabled={field.disabled || isInputDisabled}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -133,7 +131,11 @@ export function ShippingForm() {
             <FormItem>
               <FormLabel>اسم العائلة</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="محمد" />
+                <Input
+                  {...field}
+                  placeholder="محمد"
+                  disabled={field.disabled || isInputDisabled}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -156,6 +158,7 @@ export function ShippingForm() {
                   placeholder="١٢٣ شارع فيرسيل"
                   className=" transition-all  "
                   {...field}
+                  disabled={field.disabled || isInputDisabled}
                 />
               </FormControl>
               <FormMessage className="text-[10px] uppercase tracking-tighter" />
@@ -167,74 +170,77 @@ export function ShippingForm() {
           <FormField
             control={form.control}
             name="governorate"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>المحافظة</FormLabel>
-                <FormControl>
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>المحافظة</FormLabel>
+                  <FormControl>
+                    <Select
+                      value={field.value}
+                      onValueChange={handleGovernorateChange}
+                      disabled={field.disabled || isInputDisabled}
+                    >
+                      <SelectTrigger className="rounded-none shadow-none w-full">
+                        <SelectValue placeholder="اختر المحافظة" />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-none">
+                        {governorates.map((gov) => (
+                          <SelectItem
+                            className="rounded-none"
+                            key={gov}
+                            value={gov}
+                          >
+                            {gov}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          {
+            <FormField
+              name="city"
+              key={selectedGovernorate}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>المدينة</FormLabel>
                   <Select
                     value={field.value}
-                    onValueChange={handleGovernorateChange}
-                    disabled={field.disabled}
+                    onValueChange={field.onChange}
+                    disabled={field.disabled || isInputDisabled}
                   >
-                    <SelectTrigger className="rounded-none shadow-none w-full">
-                      <SelectValue placeholder="اختر المحافظة" />
-                    </SelectTrigger>
+                    <FormControl>
+                      <SelectTrigger className="rounded-none shadow-none w-full">
+                        <SelectValue
+                          dir="rtl"
+                          placeholder="اختر المدينة"
+                          className="rounded-none"
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+
                     <SelectContent className="rounded-none">
-                      {governorates.map((gov) => (
+                      {availableCities?.map((city) => (
                         <SelectItem
                           className="rounded-none"
-                          key={gov}
-                          value={gov}
+                          key={city}
+                          value={city}
                         >
-                          {gov}
+                          {city}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="city"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>المدينة</FormLabel>
-                <FormControl>
-                  <Select
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    disabled={!selectedGovernorate || field.disabled}
-                  >
-                    <SelectTrigger className="rounded-none shadow-none w-full">
-                      <SelectValue
-                        dir="rtl"
-                        placeholder="اختر المدينة"
-                        className="rounded-none"
-                      />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-none">
-                      {selectedGovernorate &&
-                        citiesByGovernorate[selectedGovernorate]?.map(
-                          (city) => (
-                            <SelectItem
-                              className="rounded-none"
-                              key={city}
-                              value={city}
-                            >
-                              {city}
-                            </SelectItem>
-                          )
-                        )}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          }
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -252,6 +258,7 @@ export function ShippingForm() {
                     placeholder="أدخل رقم الهاتف ٠١٢٣٤٥٦٧٨٩"
                     className=" transition-all "
                     {...field}
+                    disabled={field.disabled || isInputDisabled}
                   />
                 </FormControl>
                 <FormMessage className="text-[10px] uppercase tracking-tighter" />
@@ -265,7 +272,11 @@ export function ShippingForm() {
               <FormItem className="space-y-2">
                 <FormLabel>رقم المبنى/الشقة (اختياري)</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="عمارة 5، شقة 12" />
+                  <Input
+                    {...field}
+                    placeholder="عمارة 5، شقة 12"
+                    disabled={field.disabled || isInputDisabled}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -277,7 +288,6 @@ export function ShippingForm() {
       <div className="pt-6 border-t mt-auto border-white/5">
         <Button
           type="submit"
-          disabled={isSubmitting || !form.formState.isDirty}
           className="w-full h-14 font-bold uppercase tracking-widest  transition-transform active:scale-[0.98] disabled:opacity-50"
         >
           {form.formState.isSubmitting && <Spinner className="animate-spin" />}

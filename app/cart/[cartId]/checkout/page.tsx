@@ -13,7 +13,6 @@ const page = async () => {
           <h2 className="text-2xl mb-10 font-bold tracking-tight pt-1">
             عنوان الشحن
           </h2>
-
           <CarouselAddresses addresses={data.data} />
           <ShippingForm />
         </div>
