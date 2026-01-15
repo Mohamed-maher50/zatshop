@@ -16,8 +16,6 @@ import { combineAddressOperationFormValues } from "@/schema/AddressSchema";
 import { useEffect, useState } from "react";
 
 const CarouselAddresses = ({ addresses }: { addresses: Address[] }) => {
-  const [previousAddress, setPreviousAddress] =
-    useState<combineAddressOperationFormValues | null>(null);
   const [api, setApi] = useState<CarouselApi | null>(null);
   const form = useFormContext<combineAddressOperationFormValues>();
   const selectedAddress = form.getValues();
@@ -63,7 +61,6 @@ const CarouselAddresses = ({ addresses }: { addresses: Address[] }) => {
       api.scrollTo(initialIndex, false); // false = no animation
     }
   }, [api, selectedAddress]);
-  useEffect(() => {}, []);
   return (
     <div className="relative z-30 isolate">
       <Carousel

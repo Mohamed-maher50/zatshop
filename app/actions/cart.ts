@@ -1,12 +1,11 @@
 "use server";
 
-import { cart } from "@/features/cart/api/api";
-import { CartItem } from "@/providers/BayProductProvider";
+import { AddToCart, cart } from "@/features/cart/api/api";
 import { apiError } from "@/types";
-import axios, { AxiosError, AxiosProxyConfig } from "axios";
+import axios, { AxiosError } from "axios";
 import { revalidatePath } from "next/cache";
 
-export const addCartItemAction = async <T>(cartItem: CartItem) => {
+export const addCartItemAction = async <T>(cartItem: AddToCart) => {
   try {
     const res = await cart.addToCart(cartItem, {});
     revalidatePath("/cart");

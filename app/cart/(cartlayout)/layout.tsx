@@ -26,10 +26,8 @@ export default function CartLayout({
             </BreadcrumbList>
           </Breadcrumb>
           <div className="lg:flex grid w-full gap-5 items-start">
-            <div className=" flex-1">{children}</div>
-            <div className=" flex-1   ">
-              <PriceDetails />
-            </div>
+            <div className=" flex-2">{children}</div>
+            <PriceDetails />
           </div>
         </div>
       </Container>

@@ -7,11 +7,16 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 export interface apiError extends AxiosError {
   message: string;
 }
+export interface AddToCart {
+  variantSku: string;
+  productId: string;
+  quantity: number;
+}
 export const cart = {
-  addToCart: async <T>(data: CartItem, axiosOptions: AxiosRequestConfig) => {
+  addToCart: async <T>(data: AddToCart, axiosOptions: AxiosRequestConfig) => {
     const res = await api.post<
-      CartItem,
-      AxiosResponse<apiPaginatedResponse<CartItem>>
+      AddToCart,
+      AxiosResponse<apiPaginatedResponse<AddToCart>>
     >(`/cart`, data, axiosOptions);
     return res;
   },

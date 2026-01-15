@@ -10,6 +10,7 @@ import {
   findVariantMatchOption,
   variantMatchesAttributes,
 } from "../utils";
+import { useBayProduct } from "@/providers/BayProductProvider";
 interface ColorButtonProps
   extends HtmlHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
@@ -29,12 +30,12 @@ export const ColorButton = ({
 );
 const VariantSelector = ({
   product,
-  selectedVariant,
 }: {
   product: Product;
   selectedVariant: Variant;
 }) => {
   const pathname = usePathname();
+  const { selectedVariant, updateSelectedVariants } = useBayProduct();
   const router = useRouter();
   const handleOnOptionChange = ({
     option,
@@ -43,6 +44,7 @@ const VariantSelector = ({
     option: string;
     value: string;
   }) => {
+    if (!selectedVariant) return;
     const getNewVariant =
       findVariantByOption(selectedVariant, product.variants, {
         key: option,
@@ -56,17 +58,22 @@ const VariantSelector = ({
     const params = new URLSearchParams();
     if (getNewVariant) {
       params.set("variant", getNewVariant.sku);
-      router.push(pathname + `?${params.toString()}`, { scroll: false });
+      const url = `${pathname}?${params.toString()}`;
+      window.history.pushState(null, "", url);
+      updateSelectedVariants(getNewVariant);
+      // router.push(pathname + `?${params.toString()}`, { scroll: false });
     }
   };
   const availableOptionsValues = ({ option }: { option: string }) => {
     const values = new Set();
+    if (!selectedVariant) return values;
     const { [option]: _, ...remainingAttributes } = selectedVariant.attributes;
     product.variants.forEach((v) => {
       const isSameAttributes = variantMatchesAttributes(v, remainingAttributes);
       if (isSameAttributes && !values.has(v.attributes[option]))
         values.add(v.attributes[option]);
     });
+    console.log(values);
     return values;
   };
   return (
@@ -82,7 +89,7 @@ const VariantSelector = ({
               {option.type == "color" &&
                 option.values.map((v) => {
                   const isSelected =
-                    v === selectedVariant.attributes[option.name];
+                    v === selectedVariant?.attributes[option.name];
                   const isAvailableValue = !availableValues.has(v);
 
                   const colorButtonVariant = isAvailableValue
@@ -110,7 +117,7 @@ const VariantSelector = ({
                 option.values.map((v) => {
                   const buttonVariant = !availableValues.has(v)
                     ? "destructive"
-                    : v === selectedVariant.attributes[option.name]
+                    : v === selectedVariant?.attributes[option.name]
                     ? "default"
                     : "outline";
                   const isParentOption = optionIndex !== options.length - 1;

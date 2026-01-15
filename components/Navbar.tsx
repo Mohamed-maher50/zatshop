@@ -203,7 +203,7 @@ const AppNavbar = ({ cartItems }: { cartItems: number }) => {
                 );
               })}
             </div>
-            <div className="flex items-center gap-3 md:gap-3.5">
+            <div className="flex items-center gap-1.5 md:gap-3.5">
               <SearchDialog
                 isOpen={isSearchDialogOpen}
                 onClose={() => setSearchDialogOpen((prev) => !prev)}
@@ -211,8 +211,9 @@ const AppNavbar = ({ cartItems }: { cartItems: number }) => {
               <HugeiconsIcon
                 onClick={() => setSearchDialogOpen((prev) => !prev)}
                 icon={Search01Icon}
-                className="text-natural-700 cursor-pointer max-sm:hidden"
+                className="text-natural-700 cursor-pointer size-5 "
               />
+
               <AuthOnly>
                 <Link href={`/cart`} className="relative isolate">
                   <span

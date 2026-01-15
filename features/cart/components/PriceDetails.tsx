@@ -24,10 +24,9 @@ const PriceDetails = async () => {
     cartItems = cartRes.data;
   } catch (error) {}
 
-  if (!cartItems || cartItems.numOfCartItems == 0) return <EmptyCartMessage />;
-  console.log(cartItems.data._id);
+  if (!cartItems || cartItems.numOfCartItems == 0) return null;
   return (
-    <div className="flex flex-col grow  gap-4">
+    <div className="flex flex-col grow flex-1  gap-4">
       <Card className="bg-primary/2 px-0!  grow animate-in  duration-1000   fade-in   shadow-xs">
         <CardContent className="">
           <CardHeader className="my-2 px-0!">
