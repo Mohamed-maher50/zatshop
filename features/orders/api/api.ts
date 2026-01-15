@@ -1,7 +1,8 @@
 import api from "@/lib/axios";
 import { CartItem } from "@/providers/BayProductProvider";
 import { addressFormValues } from "@/schema/AddressSchema";
-import { Address, apiPaginatedResponse } from "@/types";
+import { apiPaginatedResponse } from "@/types";
+import { Stripe } from "stripe";
 import { CartResponse } from "@/types/carts";
 import { Order } from "@/types/orders";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
@@ -17,6 +18,16 @@ export const Orders = {
       CartItem,
       AxiosResponse<apiPaginatedResponse<CartItem>>
     >(`/orders/${data.cartId}`, data, axiosOptions);
+    return res;
+  },
+  createCardOrder: async (
+    data: { cartId: string; shippingAddress: addressFormValues },
+    axiosOptions?: AxiosRequestConfig
+  ) => {
+    const res = await api.post<
+      CartItem,
+      AxiosResponse<{ session: Stripe.Checkout.Session }>
+    >(`/orders/checkout-session/${data.cartId}`, data, axiosOptions);
     return res;
   },
   getAll: async (query: string, axiosOptions?: AxiosRequestConfig) => {

@@ -49,14 +49,23 @@ const ChooseMethodsPage = () => {
   const onSubmit = async (data: createOrderFormValues) => {
     try {
       const shippingAddress = addressSchema.parse(form.getValues());
-      const res = await Orders.createCashOrder({
-        cartId: cartId as string,
-        shippingAddress,
-      });
-      await refreshCart();
-      form.reset({});
-      toast.success("تم انشاء الطلب");
-      router.push("/");
+      if (data.method === "cash") {
+        const res = await Orders.createCashOrder({
+          cartId: cartId as string,
+          shippingAddress,
+        });
+        await refreshCart();
+        form.reset({});
+        toast.success("تم انشاء الطلب");
+        router.push("/");
+      } else {
+        const session = await Orders.createCardOrder({
+          cartId: cartId,
+          shippingAddress,
+        });
+        console.log(session);
+        if (session.data.session.url) router.replace(session.data.session.url);
+      }
     } catch (error) {
       console.log(error);
       toast.error("يانات الشحن غير مكتملة");
